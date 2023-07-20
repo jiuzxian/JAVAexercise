@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springtest.mapper.EmployeesMapper">
+
+    <select id="findByName" parameterType="String" resultType="com.example.springtest.entity.Employees">
+        select *
+        from employees
+        where Name LIKE '%${name}%'
+    </select>
+
+        <select id="add">
+        insert into employees (
+			Name,DepartmentID,Position,HireDate)
+		values(
+			 #{n},#{d},#{p},#{h})
+
+    </select>
+
+        <select id="deleteByID" >
+
+        delete from employees
+        where EmployeeID=${id}
+
+    </select>
+
+
+<!--    <select id="update" >-->
+<!--        update employees-->
+<!--        set Name= #{n},DepartmentID =#{d},Position =#{p},HireDate =#{h}-->
+<!--        where EmployeeID =${id};-->
+<!--    </select>-->
+
+
+    <select id="update" parameterType="com.example.springtest.entity.Employees" >
+        update employees
+        set Name= #{e.Name},DepartmentID =#{e.DepartmentID},Position =#{e.Position},HireDate =#{e.HireDate}
+        where EmployeeID =${e.EmployeeID};
+    </select>
+
+</mapper>
+        <!--<resultMap id="findByName" type="">-->
+        <!--    <result></result>-->
+
+        <!--    "%#{name}%"-->
+        <!--</resultMap>-->
