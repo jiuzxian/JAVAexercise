@@ -45,23 +45,27 @@ public class EmployeesController {
     }
 
     @PutMapping("/update")
-    public Map<String,Object> update(@RequestBody Map<String,Object> map){
+    public Map<String,Object> update(@RequestBody Employees e){
         Map<String, Object> response = new HashMap<>();
-        Integer id=(Integer) map.get("id");
-        Employees e=employeesMapper.selectById(id);
+        //Integer id=(Integer) map.get("id");
+//        Employees e= employeesMapper.selectById(id);
 
-        ///测试用，前端改格式
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate h = LocalDate.parse((String)map.get("hireDate"), fmt);
+//        ///测试用，前端改格式
+//        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate h = LocalDate.parse((String)map.get("hireDate"), fmt);
+
 
         if(e==null){
             response.put("status",222);}
         else
         {response.put("status", 200);
-            e.setName((String) map.get("name"));
-            e.setDepartmentID((Integer) map.get("departmentID"));
-            e.setPosition((String) map.get("position"));
-            e.setHireDate(h);
+//            e.setName((String) map.get("name"));
+//            e.setDepartmentID((Integer) map.get("departmentID"));
+//            e.setPosition((String) map.get("position"));
+//            e.setHireDate(h);
+
+            System.out.println(e);
+
             employeesMapper.update(e);}
 
         return response;
