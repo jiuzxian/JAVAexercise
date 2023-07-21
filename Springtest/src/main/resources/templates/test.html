@@ -74,7 +74,7 @@
         <td th:text="${employee.departmentID}"></td>
         <td th:text="${employee.position}"></td>
         <td th:text="${employee.hireDate}"></td>
-        <td style="horiz-align:center" ><button th:onclick="showUpdateEmployeeModal([[${employee.employeeID}]])">Update</button></td>
+        <td style="horiz-align:center" ><button th:onclick="|showUpdateEmployeeModal([[${employee.employeeID}]])|">Update</button></td>
     </tr>
 </table>
 </div>
@@ -159,11 +159,12 @@
     }
 
     function showUpdateEmployeeModal(employeeID) {
-        console.log("sucesson")
+        // console.log("sucesson")
 
         var par = {
-            "par":employeeID.p
+            "par":employeeID+ ""
         };
+
 
         fetch("/search", {
             method: "POST",
@@ -174,10 +175,19 @@
         })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("uname").value = data.name;
-                document.getElementById("udepartmentID").value = data.departmentID;
-                document.getElementById("uposition").value = data.position;
-                document.getElementById("uhireDate").value = data.hireDate;
+                // console.log(data);
+                // document.getElementById("uname").value = data.name;
+                // document.getElementById("udepartmentID").value = data.departmentID;
+                // document.getElementById("uposition").value = data.position;
+                // document.getElementById("uhireDate").value = data.hireDate;
+
+                const employee = data.employees[0]; // Get the first employee object
+
+                // Update the elements with the retrieved data
+                document.getElementById("uname").value = employee.name;
+                document.getElementById("udepartmentID").value = employee.departmentID;
+                document.getElementById("uposition").value = employee.position;
+                document.getElementById("uhireDate").value = employee.hireDate;
             });
 
         var modal = document.getElementById("updateEmployeeModal");
