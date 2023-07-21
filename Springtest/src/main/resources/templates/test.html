@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee List Preview</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        .modal input, .modal label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* 弹窗关闭按钮样式 */
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<table style="border: hidden">
+    <tr>
+    <td style="border: hidden"><h1>Employee List</h1></td>
+
+    <td style="border: hidden;vertical-align: bottom;width: 8%"><input type="text" id="searchname" placeholder="Name"></td>
+    <td style="border: hidden;vertical-align: bottom;width: 8%; horiz-align: left"><input type="submit" value="Search"></td>
+
+    <td style="border: hidden;vertical-align: bottom;width: 3%"><button onclick="showAddEmployeeModal()">Add</button></td>
+    <td style="border: hidden;vertical-align: bottom;width: 3%"><button onclick="">Delete</button></td>
+    <td style="border: hidden;vertical-align: bottom;width: 3%"><button style="color: red"  onclick="">Logout</button></td>
+    <tr>
+</table>
+
+<div th:if="${status == 200}">
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>DepartmentID</th>
+        <th>Position</th>
+        <th>HireDate</th>
+        <th></th>
+    </tr>
+    <tr th:each="employee: ${employees}">
+        <td th:text="${employee.employeeID}"></td>
+        <td th:text="${employee.name}"></td>
+        <td th:text="${employee.departmentID}"></td>
+        <td th:text="${employee.position}"></td>
+        <td th:text="${employee.hireDate}"></td>
+        <td style="horiz-align:center" ><button th:onclick="showUpdateEmployeeModal([[${employee.employeeID}]])">Update</button></td>
+    </tr>
+</table>
+</div>
+
+<div th:if="${status == 222}">
+    <p>No employees found.</p>
+</div>
+
+
+
+<!-- 弹窗 -->
+<div id="addEmployeeModal" class="modal">
+    <span class="close-btn" onclick="closeAddEmployeeModal()">&times;</span> <!-- 关闭按钮 -->
+    <h2>Add New Employee</h2>
+    <div>
+        <label>Name: </label>
+        <input type="text" id="name">
+        <label>DepartmentID: </label>
+        <input type="number" id="departmentID">
+        <label>Position: </label>
+        <input type="text" id="position">
+        <label>HireDate: </label>
+        <input type="date" id="hireDate">
+        <button onclick="saveEmployee()">Save</button>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div id="updateEmployeeModal" class="modal">
+    <span class="close-btn" onclick="closeAddEmployeeModal()">&times;</span> <!-- 关闭按钮 -->
+    <h2>Add New Employee</h2>
+    <div>
+        <label>Name: </label>
+        <input type="text" id="uname" value="">
+        <label>DepartmentID: </label>
+        <input type="number" id="udepartmentID" value="">
+        <label>Position: </label>
+        <input type="text" id="uposition" value="">
+        <label>HireDate: </label>
+        <input type="date" id="uhireDate" value="">
+        <button onclick="saveEmployee()">Save</button>
+    </div>
+</div>
+
+<script>
+    function showAddEmployeeModal() {
+        var modal = document.getElementById("addEmployeeModal");
+        modal.style.display = "block";
+    }
+
+    function saveEmployee() {
+        var name = document.getElementById("name").value;
+        var departmentID = document.getElementById("departmentID").value;
+        var position = document.getElementById("position").value;
+        var hireDate = document.getElementById("hireDate").value;
+
+        // 构建JSON对象，准备发送给后端
+        var employeeData = {
+            "name": name,
+            "departmentID": parseInt(departmentID),
+            "position": position,
+            "hireDate": hireDate
+        };
+
+        // 使用AJAX发送POST请求到后端
+        fetch("/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(employeeData)
+        })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                // 添加成功后隐藏弹窗并刷新页面
+                var modal = document.getElementById("addEmployeeModal");
+                modal.style.display = "none";
+                window.location.reload();
+            })
+            .catch(error => console.error(error));
+    }
+
+    function showUpdateEmployeeModal(employeeID) {
+        console.log("sucesson")
+
+        var par = {
+            "par":employeeID.p
+        };
+
+        fetch("/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(par)
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("uname").value = data.name;
+                document.getElementById("udepartmentID").value = data.departmentID;
+                document.getElementById("uposition").value = data.position;
+                document.getElementById("uhireDate").value = data.hireDate;
+            });
+
+        var modal = document.getElementById("updateEmployeeModal");
+
+        modal.style.display = "block";
+    }
+
+
+
+
+
+
+
+    function closeAddEmployeeModal() {
+        var modal = document.getElementById("addEmployeeModal");
+        modal.style.display = "none";
+    }
+</script>
+</body>
+</html>
+
+

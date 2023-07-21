@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>制作注册验证</title>
+  <link href="css/reg.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="main"><img src="images/top.jpg" alt="top" />
+  <form method="post" id="myform" action="success.html">
+    <dl>
+      <dt class="left">用户名：</dt>
+      <dd><input id="user" type="text" class="inputs" onblur="checkUser()" onfocus="showUser()" />
+        <div id="user_prompt" class="prompt"></div>
+      </dd>
+    </dl>
+    <dl>
+      <dt class="left">密码：</dt>
+      <dd><input id="pwd" type="password" class="inputs" onblur="checkPwd()" onfocus="showPwd()" />
+        <div id="pwd_prompt" class="prompt"></div>
+      </dd>
+    </dl>
+    <dl>
+      <dt class="left">&nbsp;</dt>
+      <dd><input name="" type="image" src="images/sumbit_btn.jpg" /></dd>
+    </dl>
+  </form>
+</div>
+<script>
+  function checkUser() {
+    var user = document.getElementById("user");
+    var userPrompt = document.getElementById("user_prompt");
+    userPrompt.innerHTML = "";
+    if (user.value === "") {
+      userPrompt.innerHTML = "名字不能为空";
+      return false;
+    }
+    for (var i = 0; i < user.value.length; i++) {
+      var j = user.value.charAt(i);
+      if (!isNaN(j)) {
+        userPrompt.innerHTML = "姓名中不能包含数字";
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function checkPwd() {
+    var pwd = document.getElementById("pwd");
+    var pwdPrompt = document.getElementById("pwd_prompt");
+    pwdPrompt.innerHTML = "";
+    if (pwd.value === "") {
+      pwdPrompt.innerHTML = "密码不能为空";
+      return false;
+    }
+    if (pwd.value.length < 6) {
+      pwdPrompt.innerHTML = "密码必须等于或大于6个字符";
+      return false;
+    }
+    return true;
+  }
+</script>
+</body>
+
+</html>

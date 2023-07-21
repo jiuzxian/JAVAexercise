@@ -19,7 +19,8 @@ import java.util.List;
 @Mapper
 public interface EmployeesMapper extends BaseMapper<Employees> {
 
-    List<Employees> findByName(@Param("name")String name);
+    List<Employees> all();
+    List<Employees> findBy(@Param("par")String par);
     void add(@Param("n")String Name, @Param("d")Integer DepartmentID, @Param("p")String Position, @Param("h")LocalDate HireDate);
     void deleteByID(@Param("id")Integer id);
     //void update(@Param("id")Integer id,@Param("n")String Name, @Param("d")Integer DepartmentID, @Param("p")String Position, @Param("h")LocalDate HireDate);

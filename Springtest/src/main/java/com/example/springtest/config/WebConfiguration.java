@@ -12,7 +12,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new com.example.springtest.config.LoginInterceptor())
-                .addPathPatterns("/**").excludePathPatterns("/loginPost");
+                .addPathPatterns("/**").excludePathPatterns("/loginPost","/login");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 }

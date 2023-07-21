@@ -59,12 +59,91 @@
 <div class="login-container">
     <h1>Login</h1>
     <form>
-        <label for="username">Username</label>
-        <input type="text" id="username" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" required>
+
+
+        <table style="width: 400px;">
+            <tr>
+                <td><label for="username">Username</label></td>
+                <td style="text-align:right;"><div id="user_prompt" class="prompt" style="color: crimson"></div></td>
+            </tr>
+        </table>
+        <input type="text" id="username" >
+
+        <!--   另一种判空方法 required：<input type="password" id="password" required>-->
+
+
+
+        <table style="width: 400px;">
+            <tr>
+                <td> <label for="password">Password</label></td>
+                <td style="text-align:right;"><div id="pw_prompt" class="prompt" style="color: crimson"></div></td>
+            </tr>
+        </table>
+        <input type="password" id="password" >
+
         <button type="submit">Login</button>
     </form>
 </div>
+<script>
+    // getElementById 返回的是具体的元素，所以可以直接使用 .value 属性来获取输入框的值，
+    // 而不需要像使用 querySelector 那样先获取 DOM 元素对象，然后再获取值。
+
+    var loginForm = document.querySelector('form')
+    var wz = "localhost:8089"
+
+
+    //1. 给form 绑定一个表单提交事件
+    loginForm.onsubmit = function (e) {
+        //注意：要阻止表单的默认提交行为
+        e.preventDefault()
+        console.log("Form submitted!");
+        //2.判空，并显示提示
+        var account=document.getElementById("username").value;
+        var password=document.getElementById("password").value;
+        var userPrompt = document.getElementById("user_prompt");
+        var pwPrompt = document.getElementById("pw_prompt");
+        userPrompt.innerHTML = "";
+        pwPrompt.innerHTML="";
+
+        if (account === "") {
+            userPrompt.innerHTML = "please enter account";
+            return false;
+        }
+        if (password=== "") {
+            pwPrompt.innerHTML = "please enter password";
+            return false;
+        }
+
+        var xhr=new XMLHttpRequest();
+        xhr.open('POST', 'http://localhost:8089/loginPost', true)
+        // 后端返回响应后执行
+        xhr.onload=function() {
+            //解析返回的json格式
+            console.log(xhr.responseText)
+            var res = JSON.parse(xhr.responseText);
+
+            if (res.status === 0) {
+                alert("wrong account or password!")
+            } else {
+                window.location.href = './test.html'
+            }
+        }
+            var data = {
+                account: account,
+                password: password
+            };
+
+            xhr.setRequestHeader('content-type', 'application/json')
+            xhr.send(JSON.stringify(data))
+
+
+
+    }
+
+
+
+
+</script>
+
 </body>
 </html>

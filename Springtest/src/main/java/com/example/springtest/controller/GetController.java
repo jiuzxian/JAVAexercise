@@ -1,20 +1,44 @@
 package com.example.springtest.controller;
 
+import com.example.springtest.entity.Employees;
+import com.example.springtest.mapper.EmployeesMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
 //定位网页
 public class GetController {
 
+    @Resource
+    EmployeesMapper employeesMapper;
     //登录页
-    @GetMapping("/")
+    @GetMapping({"/","login"})
     public String toLogin(){
         return "Login";
+    }
+
+    //主页
+    @GetMapping({"/test","/test.html"})
+    public String all(Model model){
+            Map<String, Object> response = new HashMap<>();
+
+            List<Employees> employeesList = employeesMapper.all();
+            if (employeesList.isEmpty()) {
+                model.addAttribute("status", 222);
+            } else {
+                model.addAttribute("status", 200);
+                model.addAttribute("employees", employeesList);
+            };
+            return "test";
     }
 
     //注销登录

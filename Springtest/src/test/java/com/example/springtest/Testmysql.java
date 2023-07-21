@@ -61,7 +61,7 @@ public class Testmysql {
 //        System.out.println(employeesList2+"过滤");
 
         //navicat修改后要提交事务！！！
-        List<Employees> employeesList = employeesMapper.findByName("AA");
+        List<Employees> employeesList = employeesMapper.findBy("5");
         System.out.println(employeesList);
     }
     @Test

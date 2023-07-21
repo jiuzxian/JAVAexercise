@@ -3,9 +3,11 @@ package com.example.springtest.controller;
 import com.example.springtest.config.LoginInterceptor;
 import com.example.springtest.entity.Employees;
 import com.example.springtest.mapper.EmployeesMapper;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.sql.Wrapper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -19,15 +21,14 @@ public class EmployeesController {
     @Resource
     EmployeesMapper employeesMapper;
 
-    @Resource
-    private LoginInterceptor loginInterceptor;
+
 
 
 
     @PostMapping("/search")
-    public Map<String,Object> search(@RequestBody Map<String,Object> map){
+    public Map<String, Object> search(@RequestBody Map<String, Object> map) {
         Map<String, Object> response = new HashMap<>();
-        String name=(String) map.get("name");
+        String par = (String) map.get("par");
 //        LambdaQueryWrapper<Employees>employeesLambdaQueryWrapper=new LambdaQueryWrapper<>();
 //        String A="AA";
 //        employeesLambdaQueryWrapper.like(Employees::getName,A);
@@ -35,17 +36,18 @@ public class EmployeesController {
 //        System.out.println(employeesList2+"过滤");
 
 
-        List<Employees> employeesList = employeesMapper.findByName(name);
+        List<Employees> employeesList = employeesMapper.findBy(par);
 
-        if(employeesList.isEmpty()){
-            response.put("status",222);}
-        else response.put("employees",employeesList);
+        if (employeesList.isEmpty()) {
+            response.put("status", 222);
+        } else response.put("employees", employeesList);
 
         return response;
     }
 
+    //注意：实体类字段要小驼峰！否则@Data生成的get或set无法识别（getName默认写法，n默认小写）
     @PutMapping("/update")
-    public Map<String,Object> update(@RequestBody Employees e){
+    public Map<String, Object> update(@RequestBody Employees e) {
         Map<String, Object> response = new HashMap<>();
         //Integer id=(Integer) map.get("id");
 //        Employees e= employeesMapper.selectById(id);
@@ -55,24 +57,23 @@ public class EmployeesController {
 //        LocalDate h = LocalDate.parse((String)map.get("hireDate"), fmt);
 
 
-        if(e==null){
-            response.put("status",222);}
-        else
-        {response.put("status", 200);
+        if (e == null) {
+            response.put("status", 222);
+        } else {
+            response.put("status", 200);
 //            e.setName((String) map.get("name"));
 //            e.setDepartmentID((Integer) map.get("departmentID"));
 //            e.setPosition((String) map.get("position"));
 //            e.setHireDate(h);
 
-            System.out.println(e);
-
-            employeesMapper.update(e);}
+            employeesMapper.update(e);
+        }
 
         return response;
     }
 
     @PostMapping("/add")
-    public Map<String,Object> add(@RequestBody Map<String,Object> map){
+    public Map<String, Object> add(@RequestBody Map<String, Object> map) {
         Map<String, Object> response = new HashMap<>();
         String name = (String) map.get("name");
         Integer departmentID = (Integer) map.get("departmentID");
@@ -80,17 +81,17 @@ public class EmployeesController {
 
         ///测试用，前端改格式
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate h = LocalDate.parse((String)map.get("hireDate"), fmt);
+        LocalDate h = LocalDate.parse((String) map.get("hireDate"), fmt);
 
-        employeesMapper.add(name,departmentID,position,h);
+        employeesMapper.add(name, departmentID, position, h);
         response.put("status", 200);
         return response;
     }
 
     @DeleteMapping("/delete")
-    public Map<String,Object> delete(@RequestBody Map<String,Object> map){
+    public Map<String, Object> delete(@RequestBody Map<String, Object> map) {
         Map<String, Object> response = new HashMap<>();
-        Integer id=(Integer) map.get("id");
+        Integer id = (Integer) map.get("id");
         employeesMapper.deleteByID(id);
         response.put("status", 200);
         return response;
