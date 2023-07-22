@@ -49,32 +49,34 @@
     <tr>
     <td style="border: hidden"><h1>Employee List</h1></td>
 
-    <td style="border: hidden;vertical-align: bottom;width: 8%"><input type="text" id="searchname" placeholder="Name"></td>
-    <td style="border: hidden;vertical-align: bottom;width: 8%; horiz-align: left"><input type="submit" value="Search"></td>
+    <td style="border: hidden;vertical-align: bottom;width: 8%"><input type="text" id="search" placeholder="Name or ID"></td>
+    <td style="border: hidden;vertical-align: bottom;width: 8%; horiz-align: left"><input type="submit" value="Search" onclick="searchEmployees()"></td>
 
     <td style="border: hidden;vertical-align: bottom;width: 3%"><button onclick="showAddEmployeeModal()">Add</button></td>
-    <td style="border: hidden;vertical-align: bottom;width: 3%"><button onclick="">Delete</button></td>
-    <td style="border: hidden;vertical-align: bottom;width: 3%"><button style="color: red"  onclick="">Logout</button></td>
+    <td style="border: hidden;vertical-align: bottom;width: 3%"><button style="color: red"  onclick="logout()">Logout</button></td>
     <tr>
 </table>
 
 <div th:if="${status == 200}">
-<table>
+<table id="employeeTableBody">
     <tr>
         <th>ID</th>
         <th>Name</th>
         <th>DepartmentID</th>
         <th>Position</th>
         <th>HireDate</th>
-        <th></th>
+        <th style="border-right: 0;"></th>
+        <th style="border-left: 0;"></th>
     </tr>
-    <tr th:each="employee: ${employees}">
+    <tr th:each="employee: ${employees}" class="dynamic">
         <td th:text="${employee.employeeID}"></td>
         <td th:text="${employee.name}"></td>
         <td th:text="${employee.departmentID}"></td>
         <td th:text="${employee.position}"></td>
         <td th:text="${employee.hireDate}"></td>
-        <td style="horiz-align:center" ><button th:onclick="|showUpdateEmployeeModal([[${employee.employeeID}]])|">Update</button></td>
+        <td  style="horiz-align:center; vertical-align: center;border-right: 0;width: 3%"><button style="color:blue" th:onclick="showUpdateEmployeeModal([[${employee.employeeID}]])">Update</button>
+        </td>
+        <td style="horiz-align:center;border-left: 0;width: 3%" ><button style="color: red" th:onclick="deleteEmployee([[${employee.employeeID}]])">Delete</button></td>
     </tr>
 </table>
 </div>
@@ -98,14 +100,14 @@
         <input type="text" id="position">
         <label>HireDate: </label>
         <input type="date" id="hireDate">
-        <button onclick="saveEmployee()">Save</button>
+        <button onclick="addEmployee()">Save</button>
     </div>
 </div>
 
 <!-- 弹窗 -->
 <div id="updateEmployeeModal" class="modal">
-    <span class="close-btn" onclick="closeAddEmployeeModal()">&times;</span> <!-- 关闭按钮 -->
-    <h2>Add New Employee</h2>
+    <span class="close-btn" onclick="closeUpdateEmployeeModal()">&times;</span> <!-- 关闭按钮 -->
+    <h2>Update Employee</h2>
     <div>
         <label>Name: </label>
         <input type="text" id="uname" value="">
@@ -115,17 +117,20 @@
         <input type="text" id="uposition" value="">
         <label>HireDate: </label>
         <input type="date" id="uhireDate" value="">
-        <button onclick="saveEmployee()">Save</button>
+        <button onclick="updateEmployee()">Save</button>
     </div>
 </div>
 
 <script>
+    // 声明全局变量，用于保存 employeeID 的值
+    let currentEmployeeID;
+
     function showAddEmployeeModal() {
         var modal = document.getElementById("addEmployeeModal");
         modal.style.display = "block";
     }
 
-    function saveEmployee() {
+    function addEmployee() {
         var name = document.getElementById("name").value;
         var departmentID = document.getElementById("departmentID").value;
         var position = document.getElementById("position").value;
@@ -161,10 +166,11 @@
     function showUpdateEmployeeModal(employeeID) {
         // console.log("sucesson")
 
+        currentEmployeeID=employeeID;
+
         var par = {
             "par":employeeID+ ""
         };
-
 
         fetch("/search", {
             method: "POST",
@@ -175,15 +181,11 @@
         })
             .then(response => response.json())
             .then(data => {
-                // console.log(data);
-                // document.getElementById("uname").value = data.name;
-                // document.getElementById("udepartmentID").value = data.departmentID;
-                // document.getElementById("uposition").value = data.position;
-                // document.getElementById("uhireDate").value = data.hireDate;
 
-                const employee = data.employees[0]; // Get the first employee object
+                //list中的第一个employee
+                const employee = data.employees[0];
 
-                // Update the elements with the retrieved data
+                // 让原本的信息作为默认输入
                 document.getElementById("uname").value = employee.name;
                 document.getElementById("udepartmentID").value = employee.departmentID;
                 document.getElementById("uposition").value = employee.position;
@@ -195,16 +197,150 @@
         modal.style.display = "block";
     }
 
+    function updateEmployee() {
+        console.log("ID:"+currentEmployeeID)
+        var name = document.getElementById("uname").value;
+        var departmentID = document.getElementById("udepartmentID").value;
+        var position = document.getElementById("uposition").value;
+        var hireDate = document.getElementById("uhireDate").value;
 
+        // 构建JSON对象，准备发送给后端
+        var employeeData = {
+            "employeeID":currentEmployeeID,
+            "name": name,
+            "departmentID": parseInt(departmentID),
+            "position": position,
+            "hireDate": hireDate
+        };
 
+        // 使用AJAX发送POST请求到后端
+        fetch("/update", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(employeeData)
+        })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                // 添加成功后隐藏弹窗并刷新页面
+                var modal = document.getElementById("updateEmployeeModal");
+                modal.style.display = "none";
+                window.location.reload();
+            })
+            .catch(error => console.error(error));
+    }
 
-
-
+    function closeUpdateEmployeeModal() {
+        var modal = document.getElementById("updateEmployeeModal");
+        modal.style.display = "none";}
 
     function closeAddEmployeeModal() {
         var modal = document.getElementById("addEmployeeModal");
         modal.style.display = "none";
     }
+
+    function deleteEmployee(employeeID){
+
+        var id = {
+            "id":employeeID
+        };
+
+        fetch("/delete", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(id)
+        })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                // 刷新页面
+                window.location.reload();
+            })
+
+    }
+
+    function searchEmployees() {
+        var searchKeyword = document.getElementById("search").value;
+
+        // 构建JSON对象，准备发送给后端
+        var searchData = {
+            "par": searchKeyword
+        };
+
+        // 使用AJAX发送POST请求到后端进行搜索
+        fetch("/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(searchData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 更新页面上的员工列表
+                const employees = data.employees;
+                updateEmployeeList(employees);
+            })
+            .catch(error => console.error(error));
+    }
+
+    function updateEmployeeList(employees) {
+        // 获取 tbody 元素
+        const tableBody = document.getElementById("employeeTableBody");
+
+        // 获取所有拥有 class 为 "dynamic" 的 tr 元素
+        const dynamicRows = document.querySelectorAll(".dynamic");
+
+        // 从表格中删除之前的动态行
+        dynamicRows.forEach(row => row.remove());
+
+
+        // 插入更新后的员工列表
+        employees.forEach(employee => {
+            const newRow = document.createElement("tr");
+            newRow.classList.add("dynamic"); // 添加 class 为 "dynamic"
+            newRow.innerHTML = `
+            <td>${employee.employeeID}</td>
+            <td>${employee.name}</td>
+            <td>${employee.departmentID}</td>
+            <td>${employee.position}</td>
+            <td>${employee.hireDate}</td>
+            <td style="horiz-align:center; vertical-align: center;border-right: 0;width: 3%">
+                <button style="color:blue" onclick="showUpdateEmployeeModal(${employee.employeeID})">Update</button>
+            </td>
+            <td style="horiz-align:center;border-left: 0;width: 3%">
+                <button style="color: red" onclick="deleteEmployee(${employee.employeeID})">Delete</button>
+            </td>
+        `;
+            tableBody.appendChild(newRow);
+        });
+    }
+
+    function logout() {
+        fetch("/logout", {
+            method: "GET",
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Logout successful!");
+                    window.location.href = "/login"; // 重定向到登录页
+                } else {
+                    alert("Logout failed.");
+                }
+            })
+            .catch(error => console.error(error));
+    }
+
+
+
+
+
+
+
 </script>
 </body>
 </html>
