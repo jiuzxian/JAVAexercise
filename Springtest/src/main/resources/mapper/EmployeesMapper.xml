@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springtest.mapper.EmployeesMapper">
-
+<!--TODO 使用resultMap作为返回   -->
     <select id="all" resultType="com.example.springtest.entity.Employees">
         select *
         from employees
@@ -20,7 +20,7 @@
 			 #{n},#{d},#{p},#{h})
 
     </select>
-
+        <!-- TODO　排版-->
         <select id="deleteByID" >
 
         delete from employees

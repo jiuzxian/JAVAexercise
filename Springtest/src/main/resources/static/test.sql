@@ -11,19 +11,23 @@ DROP TABLE IF EXISTS `test`.`employees`;
 DROP TABLE IF EXISTS `test`.`salaries`;
 DROP TABLE IF EXISTS `test`.`text`;
 DROP TABLE IF EXISTS `test`.`user`;
+
 CREATE TABLE `attendance` (
   `EmployeeID` int NOT NULL,
   `Date` date DEFAULT NULL,
+--   TODO 为什么使用time类型?
   `StartTime` time DEFAULT NULL,
   `EndTime` time DEFAULT NULL,
   KEY `attendance_ibfk_1` (`EmployeeID`),
   CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`EmployeeID`) REFERENCES `employees` (`EmployeeID`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- TODO 字段名不使用驼峰格式,用下划线分隔
 CREATE TABLE `departments` (
   `DepartmentID` int NOT NULL AUTO_INCREMENT,
   `DepartmentName` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`DepartmentID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- TODO 如果没有特别的要求,每张表的主键尽量独立
 CREATE TABLE `employees` (
   `EmployeeID` int NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) DEFAULT NULL,
@@ -36,6 +40,7 @@ CREATE TABLE `employees` (
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `salaries` (
   `EmployeeID` int NOT NULL,
+  -- TODO 数据库的字段不建议使用decimal作为字段类型
   `Salary` decimal(10,2) DEFAULT NULL,
   `EffectiveDate` date DEFAULT NULL,
   KEY `salaries_ibfk_1` (`EmployeeID`),

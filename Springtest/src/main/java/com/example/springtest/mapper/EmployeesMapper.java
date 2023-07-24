@@ -18,9 +18,11 @@ import java.util.List;
  */
 @Mapper
 public interface EmployeesMapper extends BaseMapper<Employees> {
-
+    //TODO 方法上应该注释这个方法的作用或功能
     List<Employees> all();
+    //TODO 传参尽量完整，需要具备一定的可读性和实体类的关联性
     List<Employees> findBy(@Param("par")String par);
+    //TODO 参数名小驼峰
     void add(@Param("n")String Name, @Param("d")Integer DepartmentID, @Param("p")String Position, @Param("h")LocalDate HireDate);
     void deleteByID(@Param("id")Integer id);
     //void update(@Param("id")Integer id,@Param("n")String Name, @Param("d")Integer DepartmentID, @Param("p")String Position, @Param("h")LocalDate HireDate);

@@ -18,13 +18,14 @@ import lombok.experimental.Accessors;
  * @since 2023-07-20
  */
 @Data
+//TODO 添加Accessors和EqualsAndHashCode的目的是什么
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("attendance")
 public class Attendance implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    //TODO 参数名统一使用小驼峰
     @TableField("EmployeeID")
     private Integer EmployeeID;
 
