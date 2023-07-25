@@ -50,7 +50,7 @@ public class Generater {
         // 包名配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName("springtest");   //模块名
-        pc.setParent("com.example"); //包名
+        pc.setParent("com.example.springtest"); //包名
         pc.setEntity("entity");   //数据库对应的包名
         pc.setMapper("mapper");    //Mapper对应的包名
         pc.setController("controller"); //Controller对应的包名
@@ -86,9 +86,13 @@ public class Generater {
         // 配置自定义输出模板
         // templateConfig.setEntity();
         // templateConfig.setService();
-        templateConfig.setController(null);
-        templateConfig.setXml(null);
+        templateConfig.setController(null); // 不生成Controller类
+        templateConfig.setService(null);    // 不生成Service类
+        templateConfig.setServiceImpl(null); // 不生成ServiceImpl类
+        templateConfig.setXml(null);        // 不生成Mapper.xml文件，因为只需要实体类
+        templateConfig.setMapper(null);
         mpg.setTemplate(templateConfig);
+
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();

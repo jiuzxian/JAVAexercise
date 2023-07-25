@@ -3,7 +3,6 @@ package com.example.springtest.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Lin
- * @since 2023-07-20
+ * @since 2023-07-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,11 +24,12 @@ public class Departments implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "DepartmentID", type = IdType.AUTO)
-    private Integer DepartmentID;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
-    @TableField("DepartmentName")
-    private String DepartmentName;
+    private String departmentName;
+
+    private Integer isDelete;
 
 
 }

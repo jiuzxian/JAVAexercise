@@ -67,7 +67,7 @@ public class Testmysql {
     }
     @Test
     void addx(){
-        employeesMapper.add("测试用",5,"医生", LocalDate.of(2020, 10, 15));
+        employeesMapper.add(new Employees());
     }
 
     @Test

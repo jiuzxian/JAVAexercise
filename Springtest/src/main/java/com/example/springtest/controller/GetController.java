@@ -20,32 +20,35 @@ public class GetController {
 
     @Resource
     EmployeesMapper employeesMapper;
+
     //登录页
-    @GetMapping({"/","login"})
-    public String toLogin(){
+    @GetMapping({"/", "login"})
+    public String toLogin() {
         return "Login";
     }
 
     //主页
-    @GetMapping({"/test","/test.html"})
-    public String all(Model model){
-            Map<String, Object> response = new HashMap<>();
+    @GetMapping({"/test", "/test.html"})
+    public String all(Model model) {
+        Map<String, Object> response = new HashMap<>();
 
-            List<Employees> employeesList = employeesMapper.all();
-            if (employeesList.isEmpty()) {
-                model.addAttribute("status", 222);
-            } else {
-                model.addAttribute("status", 200);
-                model.addAttribute("employees", employeesList);
-            };
-            return "test";
+        List<Employees> employeesList = employeesMapper.all();
+        if (employeesList.isEmpty()) {
+            model.addAttribute("status", 222);
+        } else {
+            model.addAttribute("status", 200);
+            model.addAttribute("employees", employeesList);
+        }
+        ;
+        return "test";
     }
 
     //注销登录
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.removeAttribute("user");
-        return "Login";}
+        return "Login";
+    }
 
 
 }

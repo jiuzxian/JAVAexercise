@@ -1,50 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.springtest.mapper.EmployeesMapper">
-<!--TODO 使用resultMap作为返回   -->
-    <select id="all" resultType="com.example.springtest.entity.Employees">
+    <!--TODO 使用resultMap作为返回   -->
+    <select id="all" resultMap="employeeResultMap">
         select *
         from employees
     </select>
 
-    <select id="findBy" parameterType="String" resultType="com.example.springtest.entity.Employees">
+    <select id="findBy" parameterType="String" resultMap="employeeResultMap">
         select *
         from employees
-        where Name LIKE '%${par}%' or EmployeeID=#{par}
+        where name LIKE '%${parameter}%'
+           or id = #{parameter}
     </select>
 
-        <select id="add">
-        insert into employees (
-			Name,DepartmentID,Position,HireDate)
-		values(
-			 #{n},#{d},#{p},#{h})
+    <select id="add" parameterType="com.example.springtest.entity.Employees">
+        insert into employees (name, department_id, position, hire_date)
+        values (#{employee.name}, #{employee.departmentID}, #{employee.position}, #{employee.hireDate})
 
     </select>
-        <!-- TODO　排版-->
-        <select id="deleteByID" >
+    <!-- TODO　排版-->
+    <select id="deleteByID">
 
-        delete from employees
-        where EmployeeID=${id}
+        delete
+        from employees
+        where id = ${id}
 
     </select>
 
 
-<!--    <select id="update" >-->
-<!--        update employees-->
-<!--        set Name= #{n},DepartmentID =#{d},Position =#{p},HireDate =#{h}-->
-<!--        where EmployeeID =${id};-->
-<!--    </select>-->
 
-
-    <select id="update" parameterType="com.example.springtest.entity.Employees" >
+    <select id="update" parameterType="com.example.springtest.entity.Employees">
         update employees
-        set Name= #{e.Name},DepartmentID =#{e.DepartmentID},Position =#{e.Position},HireDate =#{e.HireDate}
-        where EmployeeID =${e.EmployeeID};
+        set name= #{employee.name},
+            department_id =#{employee.departmentID},
+            position =#{employee.position},
+            hire_date =#{employee.hireDate}
+        where id = ${employee.id};
     </select>
+
+    <select id="isDelete">
+        update employees
+        set is_delete=1
+        where id = ${id};
+    </select>
+
+    <resultMap id="employeeResultMap" type="com.example.springtest.entity.Employees">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="departmentId" column="department_id"/>
+        <result property="position" column="position"/>
+        <result property="hireDate" column="hire_date"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+
 
 </mapper>
-        <!--<resultMap id="findByName" type="">-->
-        <!--    <result></result>-->
-
-        <!--    "%#{name}%"-->
-        <!--</resultMap>-->

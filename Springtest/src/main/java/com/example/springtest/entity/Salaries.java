@@ -1,9 +1,7 @@
 package com.example.springtest.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDate;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +13,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Lin
- * @since 2023-07-20
+ * @since 2023-07-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,14 +23,15 @@ public class Salaries implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableField("EmployeeID")
-    private Integer EmployeeID;
+    private Integer employeeId;
 
-    @TableField("Salary")
-    private BigDecimal Salary;
+    private LocalDate effectiveDate;
 
-    @TableField("EffectiveDate")
-    private LocalDate EffectiveDate;
+    private Integer id;
+
+    private Long salary;
+
+    private Integer isDelete;
 
 
 }

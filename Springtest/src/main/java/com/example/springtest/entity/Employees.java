@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Lin
- * @since 2023-07-20
+ * @since 2023-07-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,20 +25,18 @@ public class Employees implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "EmployeeID", type = IdType.AUTO)
-    private Integer EmployeeID;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
-    @TableField("Name")
-    private String Name;
+    private String name;
 
-    @TableField("DepartmentID")
-    private Integer DepartmentID;
+    private Integer departmentId;
 
-    @TableField("Position")
-    private String Position;
+    private String position;
 
-    @TableField("HireDate")
-    private LocalDate HireDate;
+    private LocalDate hireDate;
+
+    private Integer isDelete;
 
 
 }

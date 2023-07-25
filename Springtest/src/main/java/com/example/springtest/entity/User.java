@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Lin
- * @since 2023-07-20
+ * @since 2023-07-25
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -30,6 +30,8 @@ public class User implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
+    private Integer isDelete;
 
 
 }

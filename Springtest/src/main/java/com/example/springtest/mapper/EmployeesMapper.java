@@ -19,13 +19,21 @@ import java.util.List;
 @Mapper
 public interface EmployeesMapper extends BaseMapper<Employees> {
     //TODO 方法上应该注释这个方法的作用或功能
+    //初始页面加载所有员工
     List<Employees> all();
     //TODO 传参尽量完整，需要具备一定的可读性和实体类的关联性
-    List<Employees> findBy(@Param("par")String par);
+    //根据id或姓名查找员工
+    List<Employees> findBy(@Param("parameter")String parameter);
     //TODO 参数名小驼峰
-    void add(@Param("n")String Name, @Param("d")Integer DepartmentID, @Param("p")String Position, @Param("h")LocalDate HireDate);
+    //增加员工
+    void add(@Param("employee")Employees e);
+    //根据id物理删除员工
     void deleteByID(@Param("id")Integer id);
-    //void update(@Param("id")Integer id,@Param("n")String Name, @Param("d")Integer DepartmentID, @Param("p")String Position, @Param("h")LocalDate HireDate);
-    void update(@Param("e")Employees e);
+    //根据id逻辑删除员工
+    void isDelete(@Param("id") Integer id);
+    //更新
+    void update(@Param("employee")Employees e);
+
+
 
 }
