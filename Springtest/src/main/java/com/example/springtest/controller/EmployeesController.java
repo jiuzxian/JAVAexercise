@@ -11,10 +11,7 @@ import javax.annotation.Resource;
 import java.sql.Wrapper;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -26,7 +23,13 @@ public class EmployeesController {
 
 
     //TODO 方法注释
-    //TODO 请求参数和响应参数不推荐使用Map
+    //TODO 请求参数和响应参数不推荐使用Map,响应参数用Result类
+
+    /**
+     *
+     * @param map
+     * @return
+     */
     @PostMapping("/search")
     public Map<String, Object> search(@RequestBody Map<String, Object> map) {
         Map<String, Object> response = new HashMap<>();
@@ -44,7 +47,9 @@ public class EmployeesController {
             response.put("status", 222);
         }
         //TODO if/else后面的{}不要省略
-        else response.put("employees", employeesList);
+        else {
+            response.put("employees", employeesList);
+        }
 
         return response;
     }
@@ -82,6 +87,7 @@ public class EmployeesController {
         Map<String, Object> response = new HashMap<>();
         //TODO 基础类型包装类和String 类型转换尽量不用这种强转
         String name = (String) map.get("name");
+        String.valueOf(map.get("name"));
         Integer departmentID = (Integer) map.get("departmentID");
         String position = (String) map.get("position");
 

@@ -63,6 +63,7 @@ public class Testmysql {
         //navicat修改后要提交事务！！！
         List<Employees> employeesList = employeesMapper.findBy("5");
         System.out.println(employeesList);
+
     }
     @Test
     void addx(){
