@@ -88,6 +88,7 @@ System.out.println(product); // 输出：20
             return Result.fail(101,"未找到该员工！");
         }
 		 //对employeesList对象和是否包含元素同时判空
+		 //ObjectUtils, ArrayUtils.....
 		if(CollectionUtils.isEmpty(employeesList)){
              return Result.fail(101,"未找到该员工！");
          }

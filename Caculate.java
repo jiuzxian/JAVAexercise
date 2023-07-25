@@ -6,9 +6,10 @@ public class Caculate {
 
         float a = 0, b = 0;
         char fh;
+        String cx="y";
 
 
-        while (true) {
+        do{while (true) {
             System.out.println("请输入第一个数：");
             if (s.hasNextFloat()) {
                 a = s.nextFloat();
@@ -82,12 +83,12 @@ public class Caculate {
         }
 
         System.out.println("重新开始按任意键，退出请按q：");
-        String cx="y";
-        cx=s.next();
-        if(cx=="q")
-            return;
-        else
-            //TODO 这种场景不适合递归的方式
-            main(new String[0]);
+        cx=s.next();}while (cx!="q");
+
+//        if(cx=="q")
+//            return;
+//        else
+//            //TODO 这种场景不适合递归的方式
+//            main(new String[0]);
     }
 }
