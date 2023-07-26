@@ -74,7 +74,7 @@ public class Testmysql {
 
     @Test
     void deletex(){
-        employeesMapper.deleteByID(21);
+        System.out.println(employeesMapper.deleteByID(99));
     }
 
     @Test

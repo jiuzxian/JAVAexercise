@@ -14,36 +14,36 @@
            or id = #{parameter}
     </select>
 
-    <select id="add" parameterType="com.example.springtest.entity.Employees">
+    <insert id="add" parameterType="com.example.springtest.entity.Employees">
         insert into employees (name, department_id, position, hire_date)
         values (#{employee.name}, #{employee.departmentId}, #{employee.position}, #{employee.hireDate})
 
-    </select>
+    </insert>
     <!-- TODO　排版-->
-    <select id="deleteByID">
+    <delete id="deleteByID">
 
         delete
         from employees
         where id = ${id}
 
-    </select>
+    </delete>
 
 
 
-    <select id="update" parameterType="com.example.springtest.entity.Employees">
+    <update id="update" parameterType="com.example.springtest.entity.Employees">
         update employees
         set name= #{employee.name},
             department_id =#{employee.departmentID},
             position =#{employee.position},
             hire_date =#{employee.hireDate}
         where id = ${employee.id};
-    </select>
+    </update>
 
-    <select id="isDelete">
+    <update id="isDelete">
         update employees
         set is_delete=1
         where id = ${id};
-    </select>
+    </update>
 
     <resultMap id="employeeResultMap" type="com.example.springtest.entity.Employees">
         <id property="id" column="id"/>

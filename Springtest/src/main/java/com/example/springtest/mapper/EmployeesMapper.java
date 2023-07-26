@@ -26,7 +26,7 @@ public interface EmployeesMapper extends BaseMapper<Employees> {
     List<Employees> findBy(@Param("parameter")String parameter);
     //TODO 参数名小驼峰
     //增加员工
-    void add(@Param("employee")Employees e);
+    int add(@Param("employee")Employees e);
     //根据id物理删除员工
     int deleteByID(@Param("id")Integer id);
     //根据id逻辑删除员工

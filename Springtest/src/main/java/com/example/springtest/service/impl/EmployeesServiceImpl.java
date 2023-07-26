@@ -33,8 +33,8 @@ public class EmployeesServiceImpl extends ServiceImpl<EmployeesMapper, Employees
     }
 
     @Override
-    public void add(Employees e) {
-        employeesMapper.add(e);
+    public int add(Employees e) {
+        return employeesMapper.add(e);
     }
 
     @Override

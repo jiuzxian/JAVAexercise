@@ -19,7 +19,7 @@ public interface EmployeesService extends IService<Employees> {
 
     int update(Employees e);
 
-    void add(Employees e);
+    int add(Employees e);
 
     int deleteByID(Integer id);
 
