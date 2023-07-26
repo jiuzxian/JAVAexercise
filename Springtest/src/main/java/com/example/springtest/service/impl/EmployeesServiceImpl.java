@@ -28,8 +28,8 @@ public class EmployeesServiceImpl extends ServiceImpl<EmployeesMapper, Employees
     }
 
     @Override
-    public void update(Employees e) {
-        employeesMapper.update(e);
+    public int update(Employees e) {
+        return employeesMapper.update(e);
     }
 
     @Override
@@ -38,13 +38,13 @@ public class EmployeesServiceImpl extends ServiceImpl<EmployeesMapper, Employees
     }
 
     @Override
-    public void deleteByID(Integer id) {
-        employeesMapper.deleteByID(id);
+    public int deleteByID(Integer id) {
+       return employeesMapper.deleteByID(id);
     }
 
     @Override
-    public void isDelete(Integer id) {
-        employeesMapper.isDelete(id);
+    public int isDelete(Integer id) {
+       return employeesMapper.isDelete(id);
     }
 
 

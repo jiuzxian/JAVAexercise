@@ -8,7 +8,14 @@ spring:
 #    TODO 密码加密
 #    - 对称加密 aes
 #    - 非对称加密 rsa
-    password: e@8y-eEG
+#    password: e@8y-eEG
+    password: ${DATASOURCE_PWD:a+aPogpLo7uN+739jYOmK6IrRnr9mocuRuqIUaMAPcR5Ug6n1anW6gD5U/Aa+SUBjEhLmbeNjU5tGyXXGXkwsg==}
+    publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIfjZNWzwR4fszkcRpldTIb0Od8XrMUmlY1RlgQui/1GhNN1fue87jBB+lLGMqmkja5fxYrBBYK0EgAbdkbkJBcCAwEAAQ==
+    druid:
+        filter:
+          config:
+            enabled: true
+        connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publickey}
 
 
 

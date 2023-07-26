@@ -17,11 +17,11 @@ public interface EmployeesService extends IService<Employees> {
 
     List<Employees> findBy(String parameter);
 
-    void update(Employees e);
+    int update(Employees e);
 
     void add(Employees e);
 
-    void deleteByID(Integer id);
+    int deleteByID(Integer id);
 
-    void isDelete(Integer id);
+    int isDelete(Integer id);
 }

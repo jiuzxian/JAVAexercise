@@ -28,11 +28,11 @@ public interface EmployeesMapper extends BaseMapper<Employees> {
     //增加员工
     void add(@Param("employee")Employees e);
     //根据id物理删除员工
-    void deleteByID(@Param("id")Integer id);
+    int deleteByID(@Param("id")Integer id);
     //根据id逻辑删除员工
-    void isDelete(@Param("id") Integer id);
+    int isDelete(@Param("id") Integer id);
     //更新
-    void update(@Param("employee")Employees e);
+    int update(@Param("employee")Employees e);
 
 
 

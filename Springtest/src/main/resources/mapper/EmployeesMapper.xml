@@ -16,7 +16,7 @@
 
     <select id="add" parameterType="com.example.springtest.entity.Employees">
         insert into employees (name, department_id, position, hire_date)
-        values (#{employee.name}, #{employee.departmentID}, #{employee.position}, #{employee.hireDate})
+        values (#{employee.name}, #{employee.departmentId}, #{employee.position}, #{employee.hireDate})
 
     </select>
     <!-- TODO　排版-->
