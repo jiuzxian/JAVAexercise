@@ -9,13 +9,13 @@ spring:
 #    - 对称加密 aes
 #    - 非对称加密 rsa
 #    password: e@8y-eEG
-    password: ${DATASOURCE_PWD:a+aPogpLo7uN+739jYOmK6IrRnr9mocuRuqIUaMAPcR5Ug6n1anW6gD5U/Aa+SUBjEhLmbeNjU5tGyXXGXkwsg==}
-    publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIfjZNWzwR4fszkcRpldTIb0Od8XrMUmlY1RlgQui/1GhNN1fue87jBB+lLGMqmkja5fxYrBBYK0EgAbdkbkJBcCAwEAAQ==
+    password: J07fdnirJdZc4/13+okB4rhCViwa/3ZcMMNwWj/A+GXi9aCLVHNuP0eOKhae1AEJcG1p1rPmhp/YohbrVOPp4Q==
+#    publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIp8hWcaqTrV6JvVh11/o8DquocMnVbsYSGkfiAe3FGPc6gqdYx5tuMXE1phJ2kTXo/rHQik/TJBm3IvqICv4xECAwEAAQ==
     druid:
-        filter:
+      filters:
           config:
             enabled: true
-        connection-properties: config.decrypt=true;config.decrypt.key=${spring.datasource.publickey}
+      connection-properties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJueHgDm3/26IkBASdby5Y0zSI/AnBMVi57pflq01jQjXXzmwJEkmRHU4s9Fm19m6RiJz0645R7+CY4ROrZejCECAwEAAQ==
 
 
 

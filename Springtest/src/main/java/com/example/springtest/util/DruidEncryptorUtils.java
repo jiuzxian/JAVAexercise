@@ -17,22 +17,22 @@ public final class DruidEncryptorUtils {
 
     private static String publicKey;
 
-    static {
+    private static void generateKeyPair() {
         try {
             String[] keyPair = ConfigTools.genKeyPair(512);
             privateKey = keyPair[0];
-            System.out.println(String.format("privateKey-->%s", privateKey));
             publicKey = keyPair[1];
-            System.out.println(String.format("publicKey-->%s", publicKey));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
+            System.out.println("privateKey-->" + privateKey);
+            System.out.println("publicKey-->" + publicKey);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             e.printStackTrace();
         }
     }
 
 
     public static void main(String[] args) {
+
+        generateKeyPair();
         // 演示加密和解密
         String originalPassword = "e@8y-eEG";
         String encryptedPassword = encode(originalPassword);
