@@ -106,13 +106,13 @@ public class DruidConfig {
 //        } catch (Exception e) {
 //            logger.error("druid configuration initialization filter", e);
 //        }
-        //datasource.setConnectionProperties();
-//        Properties connectProperties = new Properties();
-//        connectProperties.setProperty("config.decrypt","true");
-//        connectProperties.setProperty("config.decrypt.key","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIp8hWcaqTrV6JvVh11/o8DquocMnVbsYSGkfiAe3FGPc6gqdYx5tuMXE1phJ2kTXo/rHQik/TJBm3IvqICv4xECAwEAAQ==");
-//        //datasource.setConnectionProperties(connectProperties);
+
+        Properties connectProperties = new Properties();
+        connectProperties.setProperty("config.decrypt","true");
+        connectProperties.setProperty("config.decrypt.key","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJueHgDm3/26IkBASdby5Y0zSI/AnBMVi57pflq01jQjXXzmwJEkmRHU4s9Fm19m6RiJz0645R7+CY4ROrZejCECAwEAAQ==");
+        //datasource.setConnectionProperties(connectProperties);
 //
-//        datasource.setConnectProperties(connectProperties);
+        datasource.setConnectProperties(connectProperties);
         return datasource;
     }
 

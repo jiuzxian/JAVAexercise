@@ -25,12 +25,12 @@ public class EmployeesController {
     /**
      * 用id或姓名搜索
      *
-     * @param map
+     * @param
      * @return
      */
     @PostMapping("/search")
-    public Result<List<Employees>> search(@RequestBody Map<String, Object> map) {
-        String parameter = (String) map.get("parameter");
+    public Result<List<Employees>> search(@RequestParam("parameter") String parameter) {
+
 
         //TODO 在项目中controoler层不应该直接操作数据库，应该通过service层进行操作
         List<Employees> employeesList = employeesService.findBy(parameter);
@@ -93,13 +93,12 @@ public class EmployeesController {
     /**
      * 物理删除
      *
-     * @param map
+     * @param
      * @return
      */
 
     @PostMapping("/delete")
-    public Result delete(@RequestBody Map<String, Object> map) {
-        Integer id = Integer.valueOf(String.valueOf(map.get("id")));
+    public Result delete(@RequestParam("id") int id) {
         //TODO 知道物理删除和逻辑删除吗？
         employeesService.deleteByID(id);
         return Result.success();
@@ -108,12 +107,11 @@ public class EmployeesController {
     /**
      * 逻辑删除
      *
-     * @param map
+     * @param
      * @return
      */
     @PostMapping("/isDelete")
-    public Result isDelete(@RequestBody Map<String, Object> map) {
-        Integer id = Integer.valueOf(String.valueOf(map.get("id")));
+    public Result isDelete(@RequestParam("id") int id) {
         employeesService.isDelete(id);
         return Result.success();
     }
