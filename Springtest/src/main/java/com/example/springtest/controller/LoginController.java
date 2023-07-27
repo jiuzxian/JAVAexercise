@@ -4,16 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.User;
 import com.example.springtest.mapper.UserMapper;
+import com.example.springtest.service.TokenService;
 import com.example.springtest.service.UserService;
 
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -23,14 +22,14 @@ public class LoginController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private TokenService tokenService;
+
     //登录
     @PostMapping("/loginPost")
-    public Result getCode(@RequestBody Map<String, Object> map, HttpSession session) throws Exception {
-        String account = String.valueOf(map.get("account"));
-        String password = String.valueOf(map.get("password"));
+    public Result getCode(@RequestParam("account")String account, @RequestParam("password")String password,HttpSession session) throws Exception {
 
         User user = userService.findByAccount(account);
-
 
         if (ObjectUtils.isEmpty(user)) {
             return Result.fail();
@@ -39,7 +38,15 @@ public class LoginController {
             return Result.fail(101, "密码错误！");
         }
         session.setAttribute("user", user);
-        return Result.success(user.getId());
+
+        String token=tokenService.freshToken(String.valueOf(user.getId()));
+
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("userId",user.getId());
+        result.put("token", token);
+
+        return Result.success(result);
+
     }
 
 

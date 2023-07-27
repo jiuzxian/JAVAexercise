@@ -4,6 +4,7 @@ package com.example.springtest.controller;
 import com.example.springtest.entity.Employees;
 import com.example.springtest.entity.Result;
 import com.example.springtest.service.EmployeesService;
+import com.example.springtest.service.TokenService;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ public class EmployeesController {
 
     @Resource
     EmployeesService employeesService;
+    @Resource
+    private TokenService tokenService;
 
 
     //TODO 方法注释

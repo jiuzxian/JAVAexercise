@@ -11,28 +11,32 @@ import java.security.NoSuchProviderException;
  * 明文密码+私钥(privateKey)加密=加密密码
  * 加密密码+公钥(publicKey)解密=明文密码
  */
+
 public final class DruidEncryptorUtils {
 
     private static String privateKey;
 
-    private static String publicKey;
+    private static String publicKey ="MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJu18+2HLbMCxBS5DqBws98DB2QG8V9gz4zwHRpq8PRwUWNR5280VFz8/D7HF1s5D/SuQ3qBx+eqZA5BK1xOEM0CAwEAAQ==";
 
-    private static void generateKeyPair() {
-        try {
-            String[] keyPair = ConfigTools.genKeyPair(512);
-            privateKey = keyPair[0];
-            publicKey = keyPair[1];
-            System.out.println("privateKey-->" + privateKey);
-            System.out.println("publicKey-->" + publicKey);
-        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
-            e.printStackTrace();
-        }
-    }
+
+//    static {
+//        try {
+//            String[] keyPair = ConfigTools.genKeyPair(512);
+//            privateKey = keyPair[0];
+//            System.out.println(String.format("privateKey-->%s",privateKey));
+//            publicKey = keyPair[1];
+//            System.out.println(String.format("publicKey-->%s",publicKey));
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchProviderException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     public static void main(String[] args) {
 
-        generateKeyPair();
+        //generateKeyPair();
         // 演示加密和解密
         String originalPassword = "e@8y-eEG";
         String encryptedPassword = encode(originalPassword);

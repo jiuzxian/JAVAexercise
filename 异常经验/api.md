@@ -49,7 +49,7 @@
 * 接口必须返回统一的数据结构, 参考[后端接口通用规范中接口返回的数据结构](#接口返回的数据结构)
 * 接口查询不到数据时, 即空数据的情况下返回给前端怎样的数据
   * 建议返回非 `null` 的对应数据类型初始值, 例如对象类型的返回空对象(`{}`), 数组类型的返回空数组(`[]`), 其他原始数据类型(`string`/`number`/`boolean`...)也使用对应的默认值
-  * 这样可以减少前端很多琐碎的非空判断, 直接使用接口中的数据
+  * xxxxxxxxxx          //对employeesList对象判空        if (Objects.isNull(employeesList)) {            return Result.fail();        }//对employeesList是否包含元素判空        else if(employeesList.isEmpty()){            return Result.fail(101,"未找到该员工！");        }         //对employeesList对象和是否包含元素同时判空         //ObjectUtils, ArrayUtils.....        if(CollectionUtils.isEmpty(employeesList)){             return Result.fail(101,"未找到该员工！");         }​java
   * 例如: `result.fieldName`
   * 如果 `result` 为 `null`, 可想而知会报错 `Uncaught TypeError: Cannot read property 'fieldName' of null`
 * 调用接口业务失败的常用错误码, 例如未授权时调用需要授权的接口返回 `"status": 1`
@@ -274,7 +274,7 @@ if (!response.status) {
   * 例如
   
     ![mobile-error-code-message](https://user-images.githubusercontent.com/167221/50005112-239e3f80-ffe4-11e8-9996-2affc01b8b31.png)
- ![pc-error-code-message](https://user-images.githubusercontent.com/167221/56418780-912be680-62ca-11e9-93d1-cf6d95d950d7.png)
+   ![pc-error-code-message](https://user-images.githubusercontent.com/167221/56418780-912be680-62ca-11e9-93d1-cf6d95d950d7.png)
 
 规范实现: [weapp-backend-api](https://github.com/ufologist/weapp-backend-api)
 

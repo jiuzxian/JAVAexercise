@@ -9,16 +9,13 @@ spring:
 #    - 对称加密 aes
 #    - 非对称加密 rsa
 #    password: e@8y-eEG
-    password: J07fdnirJdZc4/13+okB4rhCViwa/3ZcMMNwWj/A+GXi9aCLVHNuP0eOKhae1AEJcG1p1rPmhp/YohbrVOPp4Q==
-#    publickey: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIp8hWcaqTrV6JvVh11/o8DquocMnVbsYSGkfiAe3FGPc6gqdYx5tuMXE1phJ2kTXo/rHQik/TJBm3IvqICv4xECAwEAAQ==
-    druid:
-      filters:
-          config:
-            enabled: true
-      connection-properties: config.decrypt=true;config.decrypt.key=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJueHgDm3/26IkBASdby5Y0zSI/AnBMVi57pflq01jQjXXzmwJEkmRHU4s9Fm19m6RiJz0645R7+CY4ROrZejCECAwEAAQ==
+    password: ${DATASOURCE_PWD:E0TDiIDmRKCz5lymk2RKfFPvvPYGQJBgbMqRf+DWk0qjMfcCZRhGp6FhwS1X5GICiTPa3E9W4DaTQARmhUhC4A==}
 
-
-
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 2
+    password: 63061323
 
 
 #mybatis:

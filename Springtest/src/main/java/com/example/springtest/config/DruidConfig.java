@@ -109,7 +109,7 @@ public class DruidConfig {
 
         Properties connectProperties = new Properties();
         connectProperties.setProperty("config.decrypt","true");
-        connectProperties.setProperty("config.decrypt.key","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJueHgDm3/26IkBASdby5Y0zSI/AnBMVi57pflq01jQjXXzmwJEkmRHU4s9Fm19m6RiJz0645R7+CY4ROrZejCECAwEAAQ==");
+        connectProperties.setProperty("config.decrypt.key","MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJu18+2HLbMCxBS5DqBws98DB2QG8V9gz4zwHRpq8PRwUWNR5280VFz8/D7HF1s5D/SuQ3qBx+eqZA5BK1xOEM0CAwEAAQ==");
         //datasource.setConnectionProperties(connectProperties);
 //
         datasource.setConnectProperties(connectProperties);
