@@ -1,5 +1,9 @@
 package com.example.springtest.config;
 
+import com.example.springtest.service.EmployeesService;
+import com.example.springtest.service.TokenService;
+import com.example.springtest.util.SpringUtil;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -14,13 +18,21 @@ import java.lang.reflect.Method;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-    @Resource
-    RedisTemplate redisTemplate;
+
+//    Springutil.geiBean
+
+    RedisTemplate redisTemplate= (RedisTemplate) SpringUtil.getBean("redisTemplate");
+
+//    @Resource
+//    RedisTemplate redisTemplate;
+
 
         @Override
         public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
             String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
             String userId= httpServletRequest.getHeader("userId");
+
+
 
             if (token == null) {
                 throw new RuntimeException("无token，请重新登录");
@@ -47,8 +59,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
     }
 
-
-
 //(有状态登录)当用户未登录进入任何页面时，一律跳转到登录界面
 //    @Override
 //    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -59,6 +69,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 //        }
 //        return true;
 //    }
+
+
 
 
 
