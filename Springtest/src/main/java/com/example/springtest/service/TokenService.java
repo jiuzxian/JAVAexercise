@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class TokenService {
 
     @Resource
-    RedisTemplate redisTemplate;
+    public RedisTemplate redisTemplate;
 
 //    public String newToken(String id){
 //        String token= UUID.randomUUID().toString();

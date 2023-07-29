@@ -24,7 +24,7 @@ public class Generater {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java"); // 生成文件的输出目录,默认D根目录
-        gc.setFileOverride(true); // 是否覆盖已有文件
+        gc.setFileOverride(false); // 是否覆盖已有文件
         gc.setAuthor("Lin");
         gc.setOpen(false);        // 是否打开输出目录,默认true
         gc.setEnableCache(false); // 是否在xml中添加二级缓存配置,默认false
@@ -50,7 +50,7 @@ public class Generater {
         // 包名配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName("springtest");   //模块名
-        pc.setParent("com.example.springtest"); //包名
+        pc.setParent("com.example"); //包名
         pc.setEntity("entity");   //数据库对应的包名
         pc.setMapper("mapper");    //Mapper对应的包名
         pc.setController("controller"); //Controller对应的包名
@@ -87,10 +87,10 @@ public class Generater {
         // templateConfig.setEntity();
         // templateConfig.setService();
         templateConfig.setController(null); // 不生成Controller类
-        templateConfig.setService(null);    // 不生成Service类
-        templateConfig.setServiceImpl(null); // 不生成ServiceImpl类
-        templateConfig.setXml(null);        // 不生成Mapper.xml文件，因为只需要实体类
-        templateConfig.setMapper(null);
+        //templateConfig.setService(null);    // 不生成Service类
+        //templateConfig.setServiceImpl(null); // 不生成ServiceImpl类
+        //templateConfig.setXml(null);        // 不生成Mapper.xml文件，因为只需要实体类
+        //templateConfig.setMapper(null);
         mpg.setTemplate(templateConfig);
 
 
