@@ -18,13 +18,13 @@ import java.util.List;
  */
 @Mapper
 public interface EmployeesMapper extends BaseMapper<Employees> {
-    //TODO 方法上应该注释这个方法的作用或功能
+    // TODO 方法上应该注释这个方法的作用或功能，用文档注释/** */，不是行注释
     //初始页面加载所有员工
     List<Employees> all();
-    //TODO 传参尽量完整，需要具备一定的可读性和实体类的关联性
+    // 传参尽量完整，需要具备一定的可读性和实体类的关联性
     //根据id或姓名查找员工
     List<Employees> findBy(@Param("parameter")String parameter);
-    //TODO 参数名小驼峰
+    // 参数名小驼峰
     //增加员工
     int add(@Param("employee")Employees e);
     //根据id物理删除员工

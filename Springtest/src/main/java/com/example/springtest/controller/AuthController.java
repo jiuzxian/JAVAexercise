@@ -21,10 +21,10 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+//TODO 类注释
 @RestController
 public class AuthController {
-
+    //TODO 全局对象无特殊要求外，都用private关键字修饰
     @Resource
     EmployeesService employeesService;
 
@@ -37,16 +37,18 @@ public class AuthController {
     @Resource
     MenuService menuService;
 
-
+    //TODO 还没写完？
+    //TODO 方法注释
     @PostMapping("/authSearch")
+    //TODO 入参不用基础类型,用包装类型
     public Result<List<AuthVo>> search(@RequestParam("userId") int id) {
 
         //根据id查权限
+        //TODO 业务处理不放在controller层
         LambdaQueryWrapper<Auth> authLambdaQueryWrapper=new LambdaQueryWrapper<>();
         authLambdaQueryWrapper.eq(Auth::getUserId,id);
         List<Auth> authList =authService.list(authLambdaQueryWrapper);
         List<AuthVo> authVoList =new ArrayList<>();
-
         authList.forEach(auth -> {
             AuthVo vo = new AuthVo();
             BeanUtils.copyProperties(auth, vo);
@@ -54,10 +56,10 @@ public class AuthController {
             authVoList.add(vo);
         });
 
-
+        //TODO 若是判断是否有员工，应该放在方法第一行
         if (CollectionUtils.isEmpty(authList)) {
             return Result.fail(101, "未找到该员工！");
-        }
+        }//TODO 排版
 
         else {
             return Result.success(authVoList);
@@ -74,14 +76,16 @@ public class AuthController {
         LambdaQueryWrapper<Auth> authLambdaQueryWrapper=new LambdaQueryWrapper<>();
         authLambdaQueryWrapper.eq(Auth::getUserId,id);
         authService.remove(authLambdaQueryWrapper);
-
+        //TODO 排版
+        //TODO 为什么使用foreach遍历？
+        //TODO 新增数据时，创建人、创建时间也要进行更新
         list.forEach(n -> {
                     Auth auth = new Auth();
                     auth.setUserId(id);
                     auth.setMenuId(n);
                     authService.save(auth);
                 });
-
+        //TODO result类返回成功时，一般不重设code编码
         return Result.success(200,"授权成功！");
 
         }
@@ -101,7 +105,7 @@ public class AuthController {
             settingVoList.add(vo);
         });
 
-
+        //TODO 得到查询结果后就应该进行判断，而不是处理完后再判断
         if (CollectionUtils.isEmpty(settingList)) {
             return Result.fail(101, "无子功能！");
         }

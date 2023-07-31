@@ -11,6 +11,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 
+//TODO 实现类放在impl包路径下，是通用的方法则放在工具类
 @Component
 public class TokenService {
 
