@@ -18,6 +18,7 @@ import java.util.Map;
 @Mapper
 public interface MenuMapper extends BaseMapper<Menu> {
 
+    //映射所有id和name
     @MapKey("id")
     Map<Integer, Map> getIdNameMap();
 

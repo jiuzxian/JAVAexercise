@@ -18,8 +18,10 @@ import java.util.Map;
 @Mapper
 public interface SettingMapper extends BaseMapper<Setting> {
 
+    //映射所有id和name
     @MapKey("id")
     Map<Integer, Map> getIdNameMap();
+    //映射所有id和parentid
     @MapKey("id")
     Map<Integer, Map> getParentIdMap();
 
