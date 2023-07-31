@@ -1,10 +1,14 @@
 package com.example.springtest.service.impl;
 
 import com.example.springtest.entity.Menu;
+import com.example.springtest.mapper.DepartmentsMapper;
 import com.example.springtest.mapper.MenuMapper;
 import com.example.springtest.service.MenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * <p>
@@ -16,5 +20,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
+
+    @Resource
+    MenuMapper menuMapper;
+
+    @Override
+    public Map<Integer, Map> getIdNameMap(){
+        return  menuMapper.getIdNameMap();
+    }
 
 }

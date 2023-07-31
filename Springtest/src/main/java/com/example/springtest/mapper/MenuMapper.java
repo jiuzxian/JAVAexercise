@@ -2,7 +2,10 @@ package com.example.springtest.mapper;
 
 import com.example.springtest.entity.Menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -14,5 +17,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface MenuMapper extends BaseMapper<Menu> {
+
+    @MapKey("id")
+    Map<Integer, Map> getIdNameMap();
 
 }

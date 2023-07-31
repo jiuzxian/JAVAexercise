@@ -5,9 +5,7 @@ import com.example.springtest.entity.Attendance;
 import com.example.springtest.entity.Employees;
 import com.example.springtest.entity.User;
 import com.example.springtest.mapper.EmployeesMapper;
-import com.example.springtest.service.AttendanceService;
-import com.example.springtest.service.EmployeesService;
-import com.example.springtest.service.UserService;
+import com.example.springtest.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +17,12 @@ import java.util.Map;
 
 @SpringBootTest
 public class Testmysql {
+
+    @Resource
+    DepartmentsService departmentsService;
+
+    @Resource
+    MenuService menuService;
 
     @Autowired
     UserService userService;
@@ -61,8 +65,23 @@ public class Testmysql {
 //        System.out.println(employeesList2+"过滤");
 
         //navicat修改后要提交事务！！！
-        List<Employees> employeesList = employeesMapper.findBy("5");
-        System.out.println(employeesList);
+        //List<Employees> employeesList = employeesMapper.findBy("5");
+        //System.out.println(employeesList);
+
+        int a=1;
+
+
+        Map<Integer,Map> mnmap = menuService.getIdNameMap();
+        String settingName="";
+        try {
+            settingName=(String) mnmap.get(a).get("object");
+        } catch (Exception e) {
+            settingName="";
+        }
+        System.out.println(settingName);
+
+
+
 
     }
     @Test

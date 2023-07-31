@@ -12,10 +12,12 @@ public class AuthVo {
 
     private Integer userId;
 
-    private Integer menuId;
+    private Integer settingId;
 
     private Integer parentId;
 
-    private String menuName;
+    private String settingName;
+
+    private String parentName;
 
 }
