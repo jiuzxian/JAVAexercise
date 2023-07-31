@@ -28,7 +28,7 @@ public class Menu implements Serializable {
     private String object;
 
     private Integer isOn;
-    //TODO 为什么用LocalDateTime？
+    //TODO 为什么用LocalDateTime？Date
     private LocalDateTime createdAt;
 
     private Integer createdBy;
