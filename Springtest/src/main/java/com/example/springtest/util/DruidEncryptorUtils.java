@@ -15,7 +15,7 @@ import java.security.NoSuchProviderException;
 public final class DruidEncryptorUtils {
 
     private static String privateKey;
-
+    //TODO 类似密钥文件的内容，用final字段修饰
     private static String publicKey ="MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJu18+2HLbMCxBS5DqBws98DB2QG8V9gz4zwHRpq8PRwUWNR5280VFz8/D7HF1s5D/SuQ3qBx+eqZA5BK1xOEM0CAwEAAQ==";
 
 

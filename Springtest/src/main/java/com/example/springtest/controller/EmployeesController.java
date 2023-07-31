@@ -23,8 +23,8 @@ public class EmployeesController {
     private TokenService tokenService;
 
 
-    //TODO 方法注释
-    //TODO 请求参数和响应参数不推荐使用Map,响应参数用Result类
+    // 方法注释
+    // 请求参数和响应参数不推荐使用Map,响应参数用Result类
     /**
      * 用id或姓名搜索
      *
@@ -35,13 +35,14 @@ public class EmployeesController {
     public Result<List<Employees>> search(@RequestParam("parameter") String parameter) {
 
 
-        //TODO 在项目中controoler层不应该直接操作数据库，应该通过service层进行操作
+        // 在项目中controoler层不应该直接操作数据库，应该通过service层进行操作
         List<Employees> employeesList = employeesService.findBy(parameter);
-        //TODO 对集合的判空，可以考虑使用库中封装好的工具类
+        // 对集合的判空，可以考虑使用库中封装好的工具类
+        //TODO 单元测试中每个if、else都要覆盖都
         if (CollectionUtils.isEmpty(employeesList)) {
             return Result.fail(101, "未找到该员工！");
         }
-        //TODO if/else后面的{}不要省略
+        // if/else后面的{}不要省略
         else {
             return Result.success(employeesList);
         }
@@ -55,7 +56,7 @@ public class EmployeesController {
      * @param e
      * @return
      */
-    //TODO 尽量只使用get/post两种请求方式
+    // 尽量只使用get/post两种请求方式
     @PostMapping("/update")
     public Result update(@RequestBody Employees e) {
 
@@ -80,7 +81,7 @@ public class EmployeesController {
      */
     @PostMapping("/add")
     public Result add(@RequestBody Employees e) {
-        //TODO 基础类型包装类和String 类型转换尽量不用这种强转
+        // 基础类型包装类和String 类型转换尽量不用这种强转
 //        String name = (String) map.get("name");
 //        String.valueOf(map.get("name"));
 
@@ -102,7 +103,7 @@ public class EmployeesController {
 
     @PostMapping("/delete")
     public Result delete(@RequestParam("id") int id) {
-        //TODO 知道物理删除和逻辑删除吗？
+        // 物理删除和逻辑删除
         employeesService.deleteByID(id);
         return Result.success();
     }

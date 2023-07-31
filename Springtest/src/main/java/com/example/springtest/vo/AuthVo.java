@@ -20,4 +20,8 @@ public class AuthVo {
 
     private String parentName;
 
+
+
+
+
 }
