@@ -3,6 +3,8 @@ package com.example.springtest.service;
 import com.example.springtest.entity.Setting;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -12,5 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-07-28
  */
 public interface SettingService extends IService<Setting> {
+
+    Map<Integer, Map> getIdNameMap();
+    Map<Integer, Map> getParentIdMap();
+
 
 }

@@ -6,6 +6,9 @@ import com.example.springtest.service.DepartmentsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.Map;
+
 /**
  * <p>
  *  服务实现类
@@ -16,5 +19,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DepartmentsServiceImpl extends ServiceImpl<DepartmentsMapper, Departments> implements DepartmentsService {
+
+    @Resource
+    DepartmentsMapper departmentsMapper;
+
+    @Override
+    public Map<Integer,Map> getIdNameMap(){
+        return  departmentsMapper.getIdNameMap();
+    }
 
 }

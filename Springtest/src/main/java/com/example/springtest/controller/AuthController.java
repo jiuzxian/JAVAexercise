@@ -2,16 +2,12 @@ package com.example.springtest.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springtest.entity.*;
-import com.example.springtest.service.AuthService;
-import com.example.springtest.service.EmployeesService;
-import com.example.springtest.service.MenuService;
-import com.example.springtest.service.SettingService;
+import com.example.springtest.service.*;
 import com.example.springtest.vo.AuthVo;
 import com.example.springtest.vo.InAuthVo;
 import com.example.springtest.vo.SettingVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-//TODO 类注释
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
 @RestController
 public class AuthController {
     //TODO 全局对象无特殊要求外，都用private关键字修饰
@@ -37,7 +34,9 @@ public class AuthController {
     @Resource
     MenuService menuService;
 
-    //TODO 还没写完？
+    @Resource
+    DepartmentsService departmentsService;
+
     //TODO 方法注释
     @PostMapping("/authSearch")
     //TODO 入参不用基础类型,用包装类型
@@ -49,10 +48,43 @@ public class AuthController {
         authLambdaQueryWrapper.eq(Auth::getUserId,id);
         List<Auth> authList =authService.list(authLambdaQueryWrapper);
         List<AuthVo> authVoList =new ArrayList<>();
+
+
+        Map<Integer,Map> snmap = settingService.getIdNameMap();
+        Map<Integer,Map> smmap = settingService.getParentIdMap();
+        Map<Integer,Map> mnmap = menuService.getIdNameMap();
+
+
         authList.forEach(auth -> {
             AuthVo vo = new AuthVo();
             BeanUtils.copyProperties(auth, vo);
-            vo.setMenuName(menuService.getById(auth.getMenuId()).getObject());
+
+            //表名还没改所以转一下，一会改
+            int settingId=auth.getMenuId();
+            vo.setSettingId(settingId);
+
+            //二级菜单名
+            String settingName="";
+            try {
+                settingName=(String) snmap.get(settingId).get("object");
+            } catch (Exception e) {
+                settingName="";
+            }
+            vo.setSettingName(settingName);
+
+            //一极菜单id
+            int menuId;
+            menuId=(Integer) smmap.get(settingId).get("parent");
+            vo.setParentId(menuId);
+
+            //一级菜单名
+            String menuName="";
+            try {
+                menuName=(String) mnmap.get(menuId).get("object");
+            } catch (Exception e) {
+                menuName="";
+            }
+            vo.setParentName(menuName);
             authVoList.add(vo);
         });
 
@@ -72,10 +104,12 @@ public class AuthController {
 
         int id = vo.getUserId();
         List<Integer> list =vo.getList();
-        //检查是否已经授权过当前用户
+        //把现有的都删了
         LambdaQueryWrapper<Auth> authLambdaQueryWrapper=new LambdaQueryWrapper<>();
         authLambdaQueryWrapper.eq(Auth::getUserId,id);
         authService.remove(authLambdaQueryWrapper);
+
+        //一个个存
         //TODO 排版
         //TODO 为什么使用foreach遍历？
         //TODO 新增数据时，创建人、创建时间也要进行更新
@@ -90,31 +124,7 @@ public class AuthController {
 
         }
 
-    @PostMapping("/authKids")
-    public Result<List<SettingVo>> display(@RequestParam("menuId") int id) {
 
-        //根据id查权限
-        LambdaQueryWrapper<Setting> settingLambdaQueryWrapper=new LambdaQueryWrapper<>();
-        settingLambdaQueryWrapper.eq(Setting::getParent,id);
-        List<Setting> settingList =settingService.list(settingLambdaQueryWrapper);
-        List<SettingVo> settingVoList =new ArrayList<>();
-
-        settingList.forEach(setting -> {
-            SettingVo vo = new SettingVo();
-            BeanUtils.copyProperties(setting, vo);
-            settingVoList.add(vo);
-        });
-
-        //TODO 得到查询结果后就应该进行判断，而不是处理完后再判断
-        if (CollectionUtils.isEmpty(settingList)) {
-            return Result.fail(101, "无子功能！");
-        }
-
-        else {
-            return Result.success(settingVoList);
-        }
-
-    }
 
 
 
