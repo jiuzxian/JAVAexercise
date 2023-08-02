@@ -1,23 +1,13 @@
 package com.example.springtest.config;
 
-import com.example.springtest.service.EmployeesService;
-import com.example.springtest.service.TokenService;
-import com.example.springtest.util.SpringUtil;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -25,23 +15,28 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Resource
     RedisTemplate redisTemplate;
 
+//    Springutil.geiBean
+// 2.
+// RedisTemplate redisTemplate= (RedisTemplate) SpringUtil.getBean("redisTemplate");
+
+// 2.
+//    ApplicationContext context = new AnnotationConfigApplicationContext(RedisConfig.class);
+//    RedisTemplate redisTemplate=context.getBean(RedisTemplate.class);
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
 
         String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
-        //TODO userId不通过header传递，一般关键信息不通过外部传。
-        String userId = httpServletRequest.getHeader("userId");
-
 
         if (token == null) {
             throw new RuntimeException("无token，请重新登录");
         }
-        // 验证 token 是否有效
-        String s = String.valueOf(redisTemplate.opsForValue().get(userId));
-        if (!token.equals(String.valueOf(redisTemplate.opsForValue().get(userId)))) {
+
+        // 验证 token 是否过期（存在），不存在就拦截
+        if (!redisTemplate.hasKey(token)){
             throw new RuntimeException("token已失效，请重新登录");
         }
+
 
         return true;
     }

@@ -19,19 +19,46 @@ import java.util.List;
 @Mapper
 public interface EmployeesMapper extends BaseMapper<Employees> {
     // TODO 方法上应该注释这个方法的作用或功能，用文档注释/** */，不是行注释
-    //初始页面加载所有员工
+
+    /**
+     * 初始页面加载所有员工
+     * @return
+     */
     List<Employees> all();
-    // 传参尽量完整，需要具备一定的可读性和实体类的关联性
-    //根据id或姓名查找员工
+
+    /**
+     * 根据id或姓名查找员工
+     * @param parameter
+     * @return
+     */
     List<Employees> findBy(@Param("parameter")String parameter);
-    // 参数名小驼峰
-    //增加员工
+
+    /**
+     * 增加员工
+     * @param e
+     * @return
+     */
     int add(@Param("employee")Employees e);
-    //根据id物理删除员工
+
+    /**
+     * 根据id物理删除员工
+     * @param id
+     * @return
+     */
     int deleteByID(@Param("id")Integer id);
-    //根据id逻辑删除员工
+
+    /**
+     * 根据id逻辑删除员工
+     * @param id
+     * @return
+     */
     int isDelete(@Param("id") Integer id);
-    //更新
+
+    /**
+     * 更新
+     * @param e
+     * @return
+     */
     int update(@Param("employee")Employees e);
 
 

@@ -1,7 +1,9 @@
 package com.example.springtest.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,30 +15,55 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author Lin
- * @since 2023-07-28
+ * @since 2023-07-31
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("menu")
 public class Menu implements Serializable {
-    //TODO 不用代码生成器，知道数据库类型对应的java类型吗？
+
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 菜单ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    //TODO 字段注释
+
+    /**
+     * 对象名
+     */
     private String object;
 
+    /**
+     * 是否启用
+     */
     private Integer isOn;
-    //TODO 为什么用LocalDateTime？Date
-    private LocalDateTime createdAt;
 
+    /**
+     * 创建时间
+     */
+    private Timestamp createdAt;
+
+    /**
+     * 创建者
+     */
     private Integer createdBy;
 
-    private LocalDateTime updatedAt;
+    /**
+     * 更新时间
+     */
+    private Timestamp updatedAt;
 
+    /**
+     * 更新者
+     */
     private Integer updatedBy;
 
+    /**
+     * 备注
+     */
     private String remark;
 
 

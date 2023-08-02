@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 @Accessors(chain = true)
 public class Result<T> {
     //TODO 不要用基础类型
-    private int status;
+    private Integer status;
     private String msg;
     private T data;
 
@@ -22,8 +22,8 @@ public class Result<T> {
     public static Result success(){
         return new Result(200,"操作成功!",null);
     }
-    public static Result success(int status,String msg){
-        return new Result(status,msg,null);
+    public static Result success(String msg){
+        return new Result(200,msg,null);
     }
     public static <T> Result<T> success(T t){
         return new Result(200,"操作成功!",t);

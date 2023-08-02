@@ -1,34 +1,29 @@
-package com.example.springtest;
+package com.example.springtest.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 
-@SpringBootTest
-public class TestJWT {
+public class JWTUtil {
+    private static final String SECRET_KEY = "fortest";
 
-    // 这里用于演示的秘钥，实际使用中应该更加安全地保存
-    private static final String SECRET_KEY = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJu18+2HLbMCxBS5DqBws98DB2QG8V9gz4zwHRpq8PRwUWNR5280VFz8/D7HF1s5D/SuQ3qBx+eqZA5BK1xOEM0CAwEAAQ==";
-
-    public static void main(String[] args) {
-        // 创建JWT
-        String jwt = createJwt("user123");
-        System.out.println(jwt);
-
-        // 解析和验证JWT
-        if (validateJwt(jwt)) {
-            System.out.println("JWT验证成功！");
-            Claims claims = parseJwt(jwt);
-            System.out.println("JWT中的主题：" + claims.getSubject());
-            System.out.println("JWT中的过期时间：" + claims.getExpiration());
-        } else {
-            System.out.println("JWT验证失败！");
-        }
-    }
+//    public static void main(String[] args) {
+//        // 创建JWT
+//        String jwt = createJwt("user123");
+//        System.out.println(jwt);
+//
+//        // 解析和验证JWT
+//        if (validateJwt(jwt)) {
+//            System.out.println("JWT验证成功！");
+//            Claims claims = parseJwt(jwt);
+//            System.out.println("JWT中的主题：" + claims.getSubject());
+//            System.out.println("JWT中的过期时间：" + claims.getExpiration());
+//        } else {
+//            System.out.println("JWT验证失败！");
+//        }
+//    }
 
     // 创建JWT
     public static String createJwt(String subject) {

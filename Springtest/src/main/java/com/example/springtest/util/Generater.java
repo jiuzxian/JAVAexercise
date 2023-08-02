@@ -24,7 +24,7 @@ public class Generater {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         gc.setOutputDir(projectPath + "/src/main/java"); // 生成文件的输出目录,默认D根目录
-        gc.setFileOverride(false); // 是否覆盖已有文件
+        gc.setFileOverride(true); // 是否覆盖已有文件
         gc.setAuthor("Lin");
         gc.setOpen(false);        // 是否打开输出目录,默认true
         gc.setEnableCache(false); // 是否在xml中添加二级缓存配置,默认false
@@ -52,7 +52,7 @@ public class Generater {
         pc.setModuleName("springtest");   //模块名
         pc.setParent("com.example"); //包名
         pc.setEntity("entity");   //数据库对应的包名
-        pc.setMapper("mapper");    //Mapper对应的包名
+        pc.setMapper("map1/mapper");    //Mapper对应的包名
         pc.setController("controller"); //Controller对应的包名
         mpg.setPackageInfo(pc);
 
@@ -84,13 +84,12 @@ public class Generater {
         // 配置模板
         TemplateConfig templateConfig = new TemplateConfig();
         // 配置自定义输出模板
-        // templateConfig.setEntity();
-        // templateConfig.setService();
+         //templateConfig.setEntity();
         templateConfig.setController(null); // 不生成Controller类
-        //templateConfig.setService(null);    // 不生成Service类
-        //templateConfig.setServiceImpl(null); // 不生成ServiceImpl类
-        //templateConfig.setXml(null);        // 不生成Mapper.xml文件，因为只需要实体类
-        //templateConfig.setMapper(null);
+        templateConfig.setService(null);    // 不生成Service类
+        templateConfig.setServiceImpl(null); // 不生成ServiceImpl类
+        templateConfig.setXml(null);        // 不生成Mapper.xml文件，因为只需要实体类
+        templateConfig.setMapper(null);
         mpg.setTemplate(templateConfig);
 
 
@@ -115,6 +114,7 @@ public class Generater {
 
 /**
  * 自定义类型转换 ,解决mybatis plus自动生成代码tinyint(1)自动转换为Boolean
+ * 同时将datetime类型转换为Java的Timestamp类型
  */
 class MySqlTypeConvertCustom extends MySqlTypeConvert implements ITypeConvert {
     @Override
@@ -122,8 +122,11 @@ class MySqlTypeConvertCustom extends MySqlTypeConvert implements ITypeConvert {
         String t = fieldType.toLowerCase();
         if (t.contains("tinyint(1)")) {
             return DbColumnType.INTEGER;
+        } else if (t.contains("datetime")) {
+            return DbColumnType.TIMESTAMP;
         }
         return super.processTypeConvert(globalConfig, fieldType);
     }
 }
+
 

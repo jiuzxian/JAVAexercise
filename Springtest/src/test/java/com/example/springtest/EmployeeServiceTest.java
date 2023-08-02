@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -66,7 +67,10 @@ public class EmployeeServiceTest {
     public void testSearchEmployeeNonEmpty() {
 
         List<Employees> expected= new ArrayList<>();
-        Employees e =new Employees(4,"测试用",5,"医生", LocalDate.of(2020, 10, 15),0);
+        Employees e =new Employees(1, "John Doe", 101, "Manager", LocalDate.of(2023, 7, 31),
+                0, new Timestamp(System.currentTimeMillis()), 1,
+                new Timestamp(System.currentTimeMillis()), 2, "Some remarks");
+
         expected.add(e);
         // 模拟 mapper.findBy 方法返回 null
         when(employeesMapper.findBy("5")).thenReturn(expected);
@@ -87,7 +91,9 @@ public class EmployeeServiceTest {
     @Test
     public void testAddEmployee() {
 
-        Employees e =new Employees(null,"测试用",5,"医生", LocalDate.of(2020, 10, 15),0);
+        Employees e =new Employees(1, "John Doe", 101, "Manager", LocalDate.of(2023, 7, 31),
+                0, new Timestamp(System.currentTimeMillis()), 1,
+                new Timestamp(System.currentTimeMillis()), 2, "Some remarks");
         // 模拟方法返回 1
         when(employeesMapper.add(e)).thenReturn(1);
         // 调用测试方法
@@ -107,7 +113,9 @@ public class EmployeeServiceTest {
     @Test
     public void testUpdateEmployee() {
 
-        Employees e =new Employees(1,"测试用",5,"医生", LocalDate.of(2020, 10, 15),0);
+        Employees e =new Employees(1, "John Doe", 101, "Manager", LocalDate.of(2023, 7, 31),
+                0, new Timestamp(System.currentTimeMillis()), 1,
+                new Timestamp(System.currentTimeMillis()), 2, "Some remarks");
         // 模拟方法返回 1
         when(employeesMapper.update(e)).thenReturn(1);
         // 调用测试方法

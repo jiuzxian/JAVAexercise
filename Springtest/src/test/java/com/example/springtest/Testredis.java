@@ -1,6 +1,5 @@
 package com.example.springtest;
 
-import com.example.springtest.service.TokenService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,8 +14,6 @@ public class Testredis {
     @Resource
     RedisTemplate redisTemplate;
 
-    @Resource
-    private TokenService tokenService;
 
     @Test
     public void read(){

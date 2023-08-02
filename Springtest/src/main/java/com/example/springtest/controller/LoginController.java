@@ -1,12 +1,11 @@
 package com.example.springtest.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.User;
-import com.example.springtest.mapper.UserMapper;
-import com.example.springtest.service.TokenService;
+import com.example.springtest.util.JWTUtil;
 import com.example.springtest.service.UserService;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +13,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class LoginController {
@@ -22,8 +23,9 @@ public class LoginController {
     @Resource
     private UserService userService;
 
+
     @Resource
-    private TokenService tokenService;
+    public RedisTemplate redisTemplate;
 
     //登录
     @PostMapping("/loginPost")
@@ -37,12 +39,12 @@ public class LoginController {
         if (!password.equals(user.getPassword())) {
             return Result.fail(101, "密码错误！");
         }
-        session.setAttribute("user", user);
 
-        String token=tokenService.freshToken(String.valueOf(user.getId()));
-
+        String jwtId=JWTUtil.createJwt(String.valueOf(user.getId()));
+        String token= UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(token,jwtId,30, TimeUnit.MINUTES);
+        session.setAttribute("token", token);
         Map<String, Object> result = new HashMap<String, Object>();
-        result.put("userId",user.getId());
         result.put("token", token);
 
         return Result.success(result);

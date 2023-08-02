@@ -78,7 +78,7 @@ public class Testmysql {
         } catch (Exception e) {
             settingName="";
         }
-        System.out.println(settingName);
+        System.out.println(mnmap.get(a));
 
 
 
@@ -86,8 +86,8 @@ public class Testmysql {
     }
     @Test
     void addx(){
-        Employees e =new Employees(null,"测试用",5,"医生", LocalDate.of(2020, 10, 15),0);
-        employeesMapper.add(e);
+//        Employees e =new Employees(null,"测试用",5,"医生", LocalDate.of(2020, 10, 15),0);
+//        employeesMapper.add(e);
         //System.out.println(employeesMapper.add(e));
     }
 
