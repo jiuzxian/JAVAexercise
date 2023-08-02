@@ -32,11 +32,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new RuntimeException("无token，请重新登录");
         }
 
-        // 验证 token 是否过期（存在），不存在就拦截
+        // 验证 token 是否过期（有存），不在库里就回到登录页
         if (!redisTemplate.hasKey(token)){
-            throw new RuntimeException("token已失效，请重新登录");
-        }
+            httpServletResponse.sendRedirect("/login");
+            return false;
 
+        }
 
         return true;
     }

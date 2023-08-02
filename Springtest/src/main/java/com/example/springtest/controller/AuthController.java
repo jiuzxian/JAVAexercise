@@ -41,9 +41,6 @@ public class AuthController {
     private MenuService menuService;
 
     @Resource
-    private DepartmentsService departmentsService;
-
-    @Resource
     private TokenUtil tokenUtil;
 
     //TODO 方法注释
@@ -129,7 +126,7 @@ public class AuthController {
         //判断操作人
         String token = httpServletRequest.getHeader("token");
         tokenUtil.freshToken(token);
-        int userId=tokenUtil.getId(token);
+        int userId = tokenUtil.getId(token);
 
         int id = vo.getUserId();
         List<Integer> list = vo.getList();
