@@ -16,7 +16,7 @@ public class TokenUtil {
 
 
     @Resource
-    public RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
 
     public int getId(String token){

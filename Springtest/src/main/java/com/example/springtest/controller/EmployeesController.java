@@ -19,7 +19,7 @@ public class EmployeesController {
 
 
     @Resource
-    EmployeesService employeesService;
+    private EmployeesService employeesService;
 
     @Resource
     private TokenUtil tokenUtil;

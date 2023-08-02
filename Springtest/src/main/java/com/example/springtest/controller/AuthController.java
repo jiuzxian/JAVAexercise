@@ -44,9 +44,6 @@ public class AuthController {
     private DepartmentsService departmentsService;
 
     @Resource
-    public RedisTemplate redisTemplate;
-
-    @Resource
     private TokenUtil tokenUtil;
 
     //TODO 方法注释
