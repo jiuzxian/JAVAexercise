@@ -35,6 +35,11 @@ public class TokenUtil {
     }
 
 
+    public void logout(String token){
+        redisTemplate.delete(token);
+    }
+
+
 
 //    public String freshToken(String token){
 //

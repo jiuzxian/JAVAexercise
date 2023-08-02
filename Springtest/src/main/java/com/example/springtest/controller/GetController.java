@@ -2,12 +2,14 @@ package com.example.springtest.controller;
 
 import com.example.springtest.entity.Employees;
 import com.example.springtest.mapper.EmployeesMapper;
+import com.example.springtest.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +19,9 @@ import java.util.Map;
 @Controller
 //定位网页
 public class GetController {
+
+    @Resource
+    TokenUtil tokenUtil;
 
     @Resource
     EmployeesMapper employeesMapper;
@@ -45,8 +50,9 @@ public class GetController {
 
     //注销登录
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute("user");
+    public String logout( HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.logout(token);
         return "Login";
     }
 
