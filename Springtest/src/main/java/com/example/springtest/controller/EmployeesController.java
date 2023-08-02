@@ -4,11 +4,13 @@ package com.example.springtest.controller;
 import com.example.springtest.entity.Employees;
 import com.example.springtest.entity.Result;
 import com.example.springtest.service.EmployeesService;
+import com.example.springtest.util.TokenUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -18,6 +20,9 @@ public class EmployeesController {
 
     @Resource
     EmployeesService employeesService;
+
+    @Resource
+    private TokenUtil tokenUtil;
 
 
     // 方法注释
@@ -29,10 +34,13 @@ public class EmployeesController {
      * @return
      */
     @PostMapping("/search")
-    public Result<List<Employees>> search(@RequestParam("parameter") String parameter) {
+    public Result<List<Employees>> search(@RequestParam("parameter") String parameter, HttpServletRequest httpServletRequest) {
 
+        //刷新token
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.freshToken(token);
 
-        // 在项目中controoler层不应该直接操作数据库，应该通过service层进行操作
+        // 在项目中controler层不应该直接操作数据库，应该通过service层进行操作
         List<Employees> employeesList = employeesService.findBy(parameter);
         // 对集合的判空，可以考虑使用库中封装好的工具类
         //TODO 单元测试中每个if、else都要覆盖都
@@ -55,15 +63,18 @@ public class EmployeesController {
      */
     // 尽量只使用get/post两种请求方式
     @PostMapping("/update")
-    public Result update(@RequestBody Employees e) {
+    public Result update(@RequestBody Employees e, HttpServletRequest httpServletRequest) {
 
-//        ///测试用，前端改格式
-//        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        LocalDate h = LocalDate.parse((String)map.get("hireDate"), fmt);
-
+        //刷新token
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.freshToken(token);
         if (ObjectUtils.isEmpty(e)) {
             return Result.fail(102, "请输入员工信息！");
         } else {
+            //判断操作人
+            int userId=tokenUtil.getId(token);
+            //更新人
+            e.setUpdatedBy(userId);
             employeesService.update(e);
             return Result.success();
         }
@@ -77,14 +88,17 @@ public class EmployeesController {
      * @return
      */
     @PostMapping("/add")
-    public Result add(@RequestBody Employees e) {
-        // 基础类型包装类和String 类型转换尽量不用这种强转
-//        String name = (String) map.get("name");
-//        String.valueOf(map.get("name"));
-
+    public Result add(@RequestBody Employees e, HttpServletRequest httpServletRequest) {
+        //刷新token
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.freshToken(token);
         if (ObjectUtils.isEmpty(e)) {
             return Result.fail(102, "请输入员工信息！");
         } else {
+            //判断操作人
+            int userId=tokenUtil.getId(token);
+            //创建人
+            e.setCreatedBy(userId);
             employeesService.add(e);
             return Result.success();
         }
@@ -99,7 +113,11 @@ public class EmployeesController {
      */
 
     @PostMapping("/delete")
-    public Result delete(@RequestParam("id") int id) {
+    public Result delete(@RequestParam("id") int id, HttpServletRequest httpServletRequest) {
+        //刷新token
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.freshToken(token);
+
         // 物理删除和逻辑删除
         employeesService.deleteByID(id);
         return Result.success();
@@ -112,7 +130,11 @@ public class EmployeesController {
      * @return
      */
     @PostMapping("/isDelete")
-    public Result isDelete(@RequestParam("id") int id) {
+    public Result isDelete(@RequestParam("id") int id, HttpServletRequest httpServletRequest) {
+        //刷新token
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.freshToken(token);
+
         employeesService.isDelete(id);
         return Result.success();
     }

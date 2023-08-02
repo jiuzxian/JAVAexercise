@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springtest.entity.*;
 import com.example.springtest.service.*;
 import com.example.springtest.util.JWTUtil;
+import com.example.springtest.util.TokenUtil;
 import com.example.springtest.vo.AuthVo;
 import com.example.springtest.vo.InAuthVo;
 import com.example.springtest.vo.SettingVo;
@@ -45,6 +46,9 @@ public class AuthController {
     @Resource
     public RedisTemplate redisTemplate;
 
+    @Resource
+    private TokenUtil tokenUtil;
+
     //TODO 方法注释
 
     /**
@@ -56,8 +60,11 @@ public class AuthController {
     @PostMapping("/authSearch")
     //TODO 入参不用基础类型,用包装类型
     //TODO 前端要怎么使用这个数据结构
-    public Result<List<AuthVo>> search(@RequestParam("userId") Integer id) {
+    public Result<List<AuthVo>> search(@RequestParam("userId") Integer id, HttpServletRequest httpServletRequest) {
 
+        //刷新token
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.freshToken(token);
 
         //根据id查权限
         //TODO 业务处理不放在controller层
@@ -124,9 +131,8 @@ public class AuthController {
 
         //判断操作人
         String token = httpServletRequest.getHeader("token");
-        String jwtId = String.valueOf(redisTemplate.opsForValue().get(token));
-        Claims claims = JWTUtil.parseJwt(jwtId);
-        int userId= Integer.valueOf(String.valueOf(claims.getSubject()));
+        tokenUtil.freshToken(token);
+        int userId=tokenUtil.getId(token);
 
         int id = vo.getUserId();
         List<Integer> list = vo.getList();
@@ -135,7 +141,6 @@ public class AuthController {
             authService.removeByUId(id);
         } catch (Exception e) {
         }
-
         //一个个存
         //TODO 排版 ctrl + alt + l
         //TODO 为什么使用foreach遍历？
@@ -151,6 +156,7 @@ public class AuthController {
             auth.setUpdatedBy(userId);
             authService.save(auth);
         }
+
 
         //TODO result类返回成功时，一般不重设code编码
         return Result.success("授权成功！");

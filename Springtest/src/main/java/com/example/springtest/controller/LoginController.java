@@ -5,6 +5,7 @@ import com.example.springtest.entity.User;
 import com.example.springtest.util.JWTUtil;
 import com.example.springtest.service.UserService;
 
+import com.example.springtest.util.TokenUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,11 @@ public class LoginController {
     @Resource
     private UserService userService;
 
-
     @Resource
     public RedisTemplate redisTemplate;
+
+
+
 
     //登录
     @PostMapping("/loginPost")
@@ -41,6 +44,8 @@ public class LoginController {
         }
 
         String jwtId=JWTUtil.createJwt(String.valueOf(user.getId()));
+
+
         String token= UUID.randomUUID().toString();
         redisTemplate.opsForValue().set(token,jwtId,30, TimeUnit.MINUTES);
         session.setAttribute("token", token);
