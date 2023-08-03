@@ -2,6 +2,8 @@ package com.example.springtest.service;
 
 import com.example.springtest.entity.Auth;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.springtest.entity.Result;
+import com.example.springtest.vo.InAuthVo;
 
 import java.util.List;
 
@@ -18,5 +20,7 @@ public interface AuthService extends IService<Auth> {
     List<Auth> findByUId(int id);
 
     void removeByUId(int id);
+
+    Result authGive(InAuthVo vo, int userId);
 
 }

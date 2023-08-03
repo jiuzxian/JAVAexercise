@@ -9,6 +9,8 @@ import com.example.springtest.vo.AuthVo;
 import com.example.springtest.vo.InAuthVo;
 import com.example.springtest.vo.SettingVo;
 import io.jsonwebtoken.Claims;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
@@ -42,6 +44,7 @@ public class AuthController {
 
     @Resource
     private TokenUtil tokenUtil;
+
 
     //TODO 方法注释
 
@@ -108,7 +111,6 @@ public class AuthController {
                 authVoList.add(vo);
             }
 
-
             return Result.success(authVoList);
         }
 
@@ -127,33 +129,8 @@ public class AuthController {
         String token = httpServletRequest.getHeader("token");
         tokenUtil.freshToken(token);
         int userId = tokenUtil.getId(token);
+        return authService.authGive(vo,userId);
 
-        int id = vo.getUserId();
-        List<Integer> list = vo.getList();
-        //把现有的都删了
-        try {
-            authService.removeByUId(id);
-        } catch (Exception e) {
-        }
-        //一个个存
-        //TODO 排版 ctrl + alt + l
-        //TODO 为什么使用foreach遍历？
-        //TODO 新增数据时，创建人、创建时间也要进行更新
-
-        for (int i = 0; i < list.size(); i++) {
-            int n = list.get(i);
-            Auth auth = new Auth();
-            auth.setUserId(id);
-            auth.setSettingId(n);
-            //创建人同步更新
-            auth.setCreatedBy(userId);
-            auth.setUpdatedBy(userId);
-            authService.save(auth);
-        }
-
-
-        //TODO result类返回成功时，一般不重设code编码
-        return Result.success("授权成功！");
 
     }
 

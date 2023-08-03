@@ -1,0 +1,52 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<configuration>-->
+<!--    <include resource="org/springframework/boot/logging/logback/base.xml"/>-->
+<!--    <appender name="DB" class="com.example.springtest.config.MyDBAppender">-->
+<!--        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">-->
+<!--            <driverClass>com.mysql.cj.jdbc.Driver</driverClass>-->
+<!--            <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8</url>-->
+<!--            <user>root</user>-->
+<!--            <password>e@8y-eEG</password>-->
+<!--        </connectionSource>-->
+<!--    </appender>-->
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="DB" />-->
+<!--    </root>-->
+<!--</configuration>-->
+
+
+<!--<configuration debug="false">-->
+<!--    &lt;!&ndash;定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径&ndash;&gt;-->
+<!--    <property name="LOG_HOME" value="/home" />-->
+
+<!--    <property name="CONSOLE_LOG_PATTERN"-->
+<!--              value="%yellow(%date{yyyy-MM-dd HH:mm:ss}) |- %highlight(%-5level) | %blue(%thread) | %blue(%file:%line) | %green(%logger) - %cyan(%msg%n)"/>-->
+<!--    <property name="FILE_LOG_PATTERN"-->
+<!--              value="%d{yyyy-MM-dd HH:mm:ss} |- %-5level - %thread - %file:%line - %logger : %msg%n"/>-->
+
+
+<!--    &lt;!&ndash; 控制台输出 &ndash;&gt;-->
+<!--    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            &lt;!&ndash;格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符&ndash;&gt;-->
+<!--            <pattern>${CONSOLE_LOG_PATTERN}</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    &lt;!&ndash; 输出日志到数据库 &ndash;&gt;-->
+<!--&lt;!&ndash;    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">&ndash;&gt;-->
+<!--    <appender name="DB" class="com.example.springtest.config.MyDBAppender">-->
+<!--        <connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource">-->
+<!--            <driverClass>com.mysql.cj.jdbc.Driver</driverClass>-->
+<!--            <url>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8</url>-->
+<!--            <user>root</user>-->
+<!--            <password>e@8y-eEG</password>-->
+<!--        </connectionSource>-->
+<!--    </appender>-->
+
+<!--    &lt;!&ndash; 日志输出级别 &ndash;&gt;-->
+<!--    <root level="DEBUG">-->
+<!--        <appender-ref ref="STDOUT" />-->
+<!--        <appender-ref ref="DB"/>-->
+<!--    </root>-->
+<!--</configuration>-->

@@ -35,6 +35,12 @@
 <!--				</exclusion>-->
 			</exclusions>
 		</dependency>
+		<!-- Spring Boot Starter for Logback -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</dependency>
+
 		<!-- spring2.X集成redis所需common-pool2-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -144,7 +150,26 @@
 			<scope>compile</scope>
 		</dependency>
 
-    </dependencies>
+		<!--日志-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.10</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
+
+
+	</dependencies>
 
 	<build>
 		<plugins>

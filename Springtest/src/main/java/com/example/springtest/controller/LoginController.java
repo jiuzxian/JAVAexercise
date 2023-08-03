@@ -6,6 +6,9 @@ import com.example.springtest.util.JWTUtil;
 import com.example.springtest.service.UserService;
 
 import com.example.springtest.util.TokenUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,17 @@ public class LoginController {
 
     @Resource
     public RedisTemplate redisTemplate;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
+    @PostMapping("/my-endpoint")
+    public String myEndpoint(@RequestParam("userId") String userId) {
+        MDC.put("userId", userId);
+        MDC.put("need", String.valueOf(1));
+        LOGGER.info("This is a log message");
+        MDC.clear();
+        return "success";
+    }
 
 
 

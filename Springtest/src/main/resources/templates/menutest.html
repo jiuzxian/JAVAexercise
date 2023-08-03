@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clickable Rectangle with Icon and Text</title>
+    <style>
+        .rectangle {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .text {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="rectangle" onclick="handleClick()">
+    <img class="icon" src="your_icon_url.png" alt="Icon">
+    <span class="text">Your Text Here</span>
+</div>
+
+<script>
+
+
+
+    function handleClick() {
+        // Add your desired functionality here
+        alert('You clicked the rectangle!');
+    }
+</script>
+</body>
+</html>
