@@ -48,6 +48,11 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         authService.remove(authLambdaQueryWrapper);
     }
 
+    public void test(){
+        LambdaQueryWrapper<Auth> authLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        authService.remove(authLambdaQueryWrapper);
+    }
+
     public Result authGive(InAuthVo vo, int userId){
         int id = vo.getUserId();
         List<Integer> list = vo.getList();
