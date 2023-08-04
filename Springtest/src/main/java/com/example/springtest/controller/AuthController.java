@@ -29,7 +29,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 public class AuthController {
-    //TODO 全局对象无特殊要求外，都用private关键字修饰
     @Resource
     private EmployeesService employeesService;
 
@@ -46,7 +45,7 @@ public class AuthController {
     private TokenUtil tokenUtil;
 
 
-    //TODO 方法注释
+    // 方法注释
 
     /**
      * 查询员工的权限
@@ -55,8 +54,8 @@ public class AuthController {
      * @return
      */
     @PostMapping("/authSearch")
-    //TODO 入参不用基础类型,用包装类型
-    //TODO 前端要怎么使用这个数据结构
+    // 入参不用基础类型,用包装类型
+    // 前端要怎么使用这个数据结构
     public Result<List<AuthVo>> search(@RequestParam("userId") Integer id, HttpServletRequest httpServletRequest) {
 
         //刷新token
@@ -67,18 +66,17 @@ public class AuthController {
         //TODO 业务处理不放在controller层
         List<Auth> authList = authService.findByUId(id);
 
-        //TODO 若是判断是否有员工，应该放在方法第一行
+        // 若是判断是否有员工，应该放在方法第一行
         if (CollectionUtils.isEmpty(authList)) {
             return Result.fail(101, "未找到该员工！");
-        }//TODO 排版
-        else {
+        } else {
 
             List<AuthVo> authVoList = new ArrayList<>();
             Map<Integer, Map> snmap = settingService.getIdNameMap();
             Map<Integer, Map> smmap = settingService.getParentIdMap();
             Map<Integer, Map> mnmap = menuService.getIdNameMap();
 
-            //TODO 代码很长的时候不用foreach了，出bug了比较难定位
+            // 代码很长的时候不用foreach了，出bug了比较难定位
             for (int i = 0; i < authList.size(); i++) {
                 AuthVo vo = new AuthVo();
                 Auth auth = authList.get(i);
@@ -88,7 +86,7 @@ public class AuthController {
                 //二级菜单名
                 String settingName = "";
                 try {
-                    //TODO 基础类型不要用强转
+                    // 基础类型不要用强转
                     settingName = String.valueOf(snmap.get(settingId).get("object"));
                 } catch (Exception e) {
                     settingName = "";
@@ -129,7 +127,7 @@ public class AuthController {
         String token = httpServletRequest.getHeader("token");
         tokenUtil.freshToken(token);
         int userId = tokenUtil.getId(token);
-        return authService.authGive(vo,userId);
+        return authService.authGive(vo, userId);
 
 
     }

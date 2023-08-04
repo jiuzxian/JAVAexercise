@@ -49,7 +49,6 @@ public class Juicepv {
     private void simulateEarlyClose() {
         Thread consumers = new Thread() {
             public void run() {
-//TODO
                 while(!close && !queue.isEmpty()) {//没有打烊，并且桌面上有饮料
                     try {
                         Random random = new Random();
@@ -58,7 +57,6 @@ public class Juicepv {
                         System.err.println("消费者消费了1瓶，现有" + queue.size() + "瓶在吧台");
                         Thread.sleep(6000);//先休眠6秒再开始线程
                     } catch (InterruptedException e) {
-// TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -76,7 +74,6 @@ public class Juicepv {
     private void simulateSoldOut() {
         Thread consumers = new Thread() {
             public void run() {
-//TODO
                 while(!close && !queue.isEmpty()) {
                     try {
                         Random random = new Random();
@@ -85,7 +82,6 @@ public class Juicepv {
                         System.err.println("消费者消费了1瓶，现有" + queue.size() + "瓶在吧台");
                         Thread.sleep(1000);//先休眠1秒再开始线程
                     } catch (InterruptedException e) {
-// TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
@@ -105,7 +101,6 @@ public class Juicepv {
         for(int i=1;i<=10;i++) {
             Thread consumers = new Thread() {
                 public void run() {
-//TODO
                     while(!close) {//没有打烊
                         try {
                             if(queue.isEmpty()) {//如果桌面上没有饮料，则休眠1秒
@@ -123,7 +118,6 @@ public class Juicepv {
                                 Thread.sleep(900);//先休眠0.9秒再开始线程
                             }
                         } catch (InterruptedException e) {
-// TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }

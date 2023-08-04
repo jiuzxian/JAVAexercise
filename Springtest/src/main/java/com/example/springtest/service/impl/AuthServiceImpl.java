@@ -61,9 +61,8 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
             } catch (Exception e) {
             }
             //一个个存
-            //TODO 排版 ctrl + alt + l
-            //TODO 为什么使用foreach遍历？
-            //TODO 新增数据时，创建人、创建时间也要进行更新
+            // 排版 ctrl + alt + l
+            // 新增数据时，创建人、创建时间也要进行更新
 
             for (int i = 0; i < list.size(); i++) {
                 int n = list.get(i);
@@ -91,7 +90,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
             result = Result.fail();
         }
 
-        //TODO result类返回成功时，一般不重设code编码
+        // result类返回成功时，一般不重设code编码
         return result;
     }
 

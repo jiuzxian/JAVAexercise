@@ -43,7 +43,7 @@ public class EmployeesController {
         // 在项目中controler层不应该直接操作数据库，应该通过service层进行操作
         List<Employees> employeesList = employeesService.findBy(parameter);
         // 对集合的判空，可以考虑使用库中封装好的工具类
-        //TODO 单元测试中每个if、else都要覆盖都
+        // 单元测试中每个if、else都要覆盖都
         if (CollectionUtils.isEmpty(employeesList)) {
             return Result.fail(101, "未找到该员工！");
         }
