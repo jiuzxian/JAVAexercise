@@ -13,6 +13,9 @@ import com.example.springtest.service.SettingService;
 import com.example.springtest.vo.AuthVo;
 import com.example.springtest.vo.InAuthVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
  * @since 2023-07-28
  */
 @Service
+//@EnableTransactionManagement
 public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements AuthService {
 
     @Resource
@@ -59,12 +63,14 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         authService.remove(authLambdaQueryWrapper);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Result authGive(InAuthVo vo, int userId){
         int id = vo.getUserId();
         List<Integer> list = vo.getList();
         Log log= new Log();
         Result result=new Result();
-
+        //只回滚以下异常，设置回滚点
+        Object savePoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
         try {
             //把现有的都删了
             try {
@@ -84,6 +90,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                 auth.setCreatedBy(userId);
                 auth.setUpdatedBy(userId);
                 authService.save(auth);
+                if(i == list.size() / 2) throw new RuntimeException("Test exception");
             }
 
             log.setType("authGive");
@@ -94,10 +101,14 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
             logService.save(log);
             result = Result.success("授权成功！");
         } catch (Exception e) {
+            //手工回滚异常，回滚到savePoint
+            TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
             log.setType("authGive");
+            log.setUserId(userId);
             log.setObject(vo.toString());
             log.setSuccessful(0);
             logService.save(log);
+            //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             result = Result.fail();
         }
 
@@ -111,6 +122,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
      * @param vo1s
      * @return
      */
+    //传入最底层菜单的vo集合
     public List<AuthVo> upShow(List<AuthVo> vo1s){
         //实例化一个父集合
         List<AuthVo> parentVos=new ArrayList<>();
