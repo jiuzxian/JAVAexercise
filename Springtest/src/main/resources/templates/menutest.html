@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clickable Rectangle with Icon and Text</title>
+    <title>Dynamic Buttons from Data</title>
     <style>
-        .rectangle {
-            display: inline-flex;
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .button {
+            display: flex;
             align-items: center;
-            padding: 10px;
+            margin-bottom: 10px;
+            padding: 8px 12px;
             border: 1px solid #ccc;
             cursor: pointer;
         }
@@ -19,25 +26,129 @@
             margin-right: 10px;
         }
 
-        .text {
-            font-size: 16px;
+        .setting-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
+
     </style>
 </head>
 <body>
-<div class="rectangle" onclick="handleClick()">
-    <img class="icon" src="your_icon_url.png" alt="Icon">
-    <span class="text">Your Text Here</span>
+
+<div class="button-container" id="buttonContainer">
+    <div class="setting-container" id="settingContainer"></div>
 </div>
 
 <script>
+    const data = [
+        {
+            "userId": 1,
+            "settingId": 1,
+            "parentId": 1,
+            "settingName": "系统日志",
+            "parentName": "系统设置",
+            "parentIcon": "url1"
+        },
+        {
+            "userId": 1,
+            "settingId": 2,
+            "parentId": 1,
+            "settingName": "在线用户",
+            "parentName": "系统设置",
+            "parentIcon": "url2"
+        },
+        {
+            "userId": 1,
+            "settingId": 4,
+            "parentId": 2,
+            "settingName": "监控",
+            "parentName": "功能组件",
+            "parentIcon": "url3"
+        }
+    ];
 
+    //合并具有相同 parentId 的项
+    function mergeItemsWithSameParentId(data) {
+        const mergedData = [];
+        const parentIds = new Set();
 
+        data.forEach(item => {
+            if (!parentIds.has(item.parentId)) {
+                parentIds.add(item.parentId);
+                mergedData.push(item);
+            }
+        });
 
-    function handleClick() {
-        // Add your desired functionality here
-        alert('You clicked the rectangle!');
+        return mergedData;
     }
+
+    // 获取用于显示按钮的容器元素
+    const buttonContainer = document.getElementById('buttonContainer');
+    const settingContainer = document.getElementById('settingContainer');
+
+    function createSetting(dataItem) {
+        const sbutton = document.createElement('div');
+        sbutton.classList.add('button');
+        sbutton.id = dataItem.settingId;
+
+        // 添加文本
+        const text = document.createElement('span');
+        text.textContent = dataItem.settingName;
+        sbutton.appendChild(text);
+
+        // 添加点击事件
+        sbutton.onclick = function () {
+            alert(`点击了 ${dataItem.settingName}`);
+        };
+
+        return sbutton;
+    }
+
+    //生成按钮元素
+    function createButton(dataItem) {
+        const button = document.createElement('div');
+        button.classList.add('button');
+
+        // 添加图标
+        const icon = document.createElement('img');
+        icon.src = dataItem.parentIcon;
+        icon.classList.add('icon');
+        button.appendChild(icon);
+
+        // 添加文本
+        const text = document.createElement('span');
+        text.textContent = dataItem.parentName;
+        button.appendChild(text);
+
+        // 添加点击事件
+        button.onclick = function () {
+            // 清空子按钮容器
+            settingContainer.innerHTML = '';
+
+            // 生成子按钮
+            const parentSettingId = dataItem.parentId;
+            const childItems = data.filter(item => item.parentId === parentSettingId);
+
+            childItems.forEach(settingItem => {
+                const sbutton = createSetting(settingItem);
+                settingContainer.appendChild(sbutton);
+            });
+        };
+
+        return button;
+    }
+
+    //合并具有相同 parentId 的项
+    const mergedData = mergeItemsWithSameParentId(data);
+
+    //为每个项生成按钮，并添加到容器中显示
+    mergedData.forEach(item => {
+        const button = createButton(item);
+        buttonContainer.appendChild(button);
+    });
 </script>
 </body>
 </html>
+
+

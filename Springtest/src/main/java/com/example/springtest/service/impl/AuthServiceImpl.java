@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springtest.entity.Auth;
 import com.example.springtest.entity.Log;
 import com.example.springtest.entity.Result;
+import com.example.springtest.entity.Setting;
 import com.example.springtest.mapper.AuthMapper;
 import com.example.springtest.service.AuthService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.springtest.service.LogService;
+import com.example.springtest.service.SettingService;
 import com.example.springtest.vo.AuthVo;
 import com.example.springtest.vo.InAuthVo;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -33,6 +36,9 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
 
     @Resource
     LogService logService;
+
+    @Resource
+    SettingService settingService;
 
     public  List<Auth> findByUId(int id){
 
@@ -96,4 +102,50 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
     }
 
 
+    /**
+     * 根据子项把菜单集合增大完整
+     * @param vo1s
+     * @return
+     */
+    public List<AuthVo> upShow(List<AuthVo> vo1s){
+        //实例化一个父集合
+        List<AuthVo> parentVos=new ArrayList<>();
+        //遍历传来的所有子项
+        for(int i=0;i<vo1s.size();i++){
+            int sid=vo1s.get(i).getId();
+            int pid=settingService.getById(sid).getParent();
+            //如果父id为-1，就返回上一次的结果
+            if(pid==-1){
+                return vo1s;
+            }
+            else {
+                //拿到父集合现有id
+                List<Integer> parentIdList;
+                parentIdList = parentVos.stream().map(AuthVo::getId).collect(Collectors.toList());
+                //当前子项的父id如果已经存在于父集合中
+                if(parentIdList.contains(pid)) {
+                    //parentVos.stream().filter(parentVo-> parentVo.getId().equals(pid)).findFirst()
+                    //找到那个父项，把当前子项添加到child
+                    for (int j = 0; j < parentVos.size(); j++) {
+                        if (parentVos.get(j).getId().equals(pid)) {
+                            parentVos.get(j).getChild().add(vo1s.get(i));
+                            break;
+                        }
+                    }
+                }
+                else {//若是新父项,把当前子项加入父项后，把新父项加入集合中
+                    AuthVo parentVo=new AuthVo();
+                    parentVo.setId(pid);
+                    parentVo.setName(settingService.getById(pid).getObject());
+                    parentVo.getChild().add(vo1s.get(i));
+                    parentVo.setUrl("nihao");
+                    parentVos.add(parentVo);
+                        }
+                    }
+                }
+
+
+        //将得到的父项集合作为下一次迭代的子项集
+        return upShow(parentVos);
+    }
 }
