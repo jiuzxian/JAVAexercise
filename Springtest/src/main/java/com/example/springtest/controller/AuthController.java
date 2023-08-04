@@ -45,6 +45,12 @@ public class AuthController {
     private TokenUtil tokenUtil;
 
 
+    public void test(HttpServletRequest httpServletRequest){
+        //刷新token
+        String token = httpServletRequest.getHeader("token");
+        tokenUtil.freshToken(token);
+    }
+
     // 方法注释
 
     /**
