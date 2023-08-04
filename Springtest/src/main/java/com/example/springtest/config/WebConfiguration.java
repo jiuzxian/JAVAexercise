@@ -14,7 +14,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     //拦截器应用
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
-//            //TODO 要使用springboot的自动注入，不能使用new 来创建对象
+//            // 要使用springboot的自动注入，不能使用new 来创建对象
 //        registry.addInterceptor(new com.example.springtest.config.LoginInterceptor())
 //                .addPathPatterns("/**").excludePathPatterns("/loginPost","/login");
 //        WebMvcConfigurer.super.addInterceptors(registry);

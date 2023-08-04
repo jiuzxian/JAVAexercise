@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 @Data
 @Accessors(chain = true)
 public class Result<T> {
-    //TODO 不要用基础类型
+    // 不要用基础类型
     private Integer status;
     private String msg;
     private T data;
