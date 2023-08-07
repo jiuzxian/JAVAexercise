@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- *  服务实现类
+ * 权限服务实现类
  * </p>
  *
  * @author Lin
@@ -46,7 +46,8 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
     SettingService settingService;
 
     //TODO 实现的的方法要加Override注解
-    public  List<Auth> findByUId(int id){
+    @Override
+    public List<Auth> findByUId(int id) {
 
         LambdaQueryWrapper<Auth> authLambdaQueryWrapper = new LambdaQueryWrapper<>();
         authLambdaQueryWrapper.eq(Auth::getUserId, id);
@@ -54,25 +55,30 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         return authList;
     }
 
-    public void removeByUId(int id){
+    @Override
+    public void removeByUId(int id) {
         LambdaQueryWrapper<Auth> authLambdaQueryWrapper = new LambdaQueryWrapper<>();
         authLambdaQueryWrapper.eq(Auth::getUserId, id);
         authService.remove(authLambdaQueryWrapper);
     }
-    //TODO 冲突处理
-    public void test(){
-        LambdaQueryWrapper<Auth> authLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        authService.remove(authLambdaQueryWrapper);
-    }
+
 
     //TODO 事务的隔离性、传播性
-    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRES_NEW)
-    public Result authGive(InAuthVo vo, int userId){
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    public Result authGive(InAuthVo vo, int userId) {
         int id = vo.getUserId();
         List<Integer> list = vo.getList();
+
+        List<Setting> settings = settingService.listByIds(list);
+        //查找需要给的权限的父是否是-1，若是则fail---》 join
+//        for (int i = 0; i < list.size(); i++) {
+//
+//        }
+
         //TODO 对象创建在需要的地方
-        Log log= new Log();
-        Result result=new Result();
+        Log log = new Log();
+        Result result = new Result();
         //只回滚以下异常，设置回滚点
         Object savePoint = TransactionAspectSupport.currentTransactionStatus().createSavepoint();
         try {
@@ -80,8 +86,8 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
             try {
                 authService.removeByUId(id);
             } catch (Exception e) {
+                System.out.println("没有权限重叠！");
                 //TODO 捕获异常后是不是得做点什么？
-               
             }
             //一个个存
             // 排版 ctrl + alt + l
@@ -97,61 +103,52 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                 auth.setUpdatedBy(userId);
                 authService.save(auth);
                 //TODO 括号
-                if(i == list.size() / 2) throw new RuntimeException("Test exception");
+                if (i == list.size() / 2) {
+                    throw new RuntimeException("Test exception");
+                }
             }
             //TODO 以下代码基本一致，考虑封装
-            log.setType("authGive");
-            log.setUserId(userId);
-            log.setOperateAt( new Timestamp(System.currentTimeMillis()));
-            log.setObject(vo.toString());
-            log.setSuccessful(1);
-            logService.save(log);
-            result = Result.success("授权成功！");
+            return logService.logSuccess("authGive", userId, vo.toString());
         } catch (Exception e) {
             //手工回滚异常，回滚到savePoint
             //TODO 为什么写在这个位置
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
-            log.setType("authGive");
-            log.setUserId(userId);
-            log.setObject(vo.toString());
-            log.setSuccessful(0);
-            logService.save(log);
-            //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            result = Result.fail();
+            return logService.logFail("authGive", userId, vo.toString());
         }
 
         // result类返回成功时，一般不重设code编码
-        return result;
+        //return result;
     }
 
 
     /**
      * 根据子项把菜单集合增大完整
+     *
      * @param vo1s
      * @return
      */
     //TODO 参数命名尽量具备自解释的作用
+    @Override
     //传入最底层菜单的vo集合
-    public List<AuthVo> upShow(List<AuthVo> vo1s){
+    public List<AuthVo> upShow(List<AuthVo> vo1s) {
         //实例化一个父集合
-        List<AuthVo> parentVos=new ArrayList<>();
+        List<AuthVo> parentVos = new ArrayList<>();
         //遍历传来的所有子项
         //TODO 出现超过三层的分支就要考虑一下你的代码是不是存在优化的可能性
-        for(int i=0;i<vo1s.size();i++){
-            int sid=vo1s.get(i).getId();
+        for (int i = 0; i < vo1s.size(); i++) {
+            int sid = vo1s.get(i).getId();
             //TODO 这里为什么需要再次查询？
-            int pid=settingService.getById(sid).getParent();
+            int pid = settingService.getById(sid).getParent();
             //如果父id为-1，就返回上一次的结果
             //TODO 直接return吗？
-            if(pid==-1){
+            if (pid == -1) {
                 return vo1s;
-            }
-            else {
+            } else {
                 //拿到父集合现有id
                 List<Integer> parentIdList;
                 parentIdList = parentVos.stream().map(AuthVo::getId).collect(Collectors.toList());
                 //当前子项的父id如果已经存在于父集合中
-                if(parentIdList.contains(pid)) {
+                if (parentIdList.contains(pid)) {
                     //parentVos.stream().filter(parentVo-> parentVo.getId().equals(pid)).findFirst()
                     //找到那个父项，把当前子项添加到child
                     for (int j = 0; j < parentVos.size(); j++) {
@@ -160,9 +157,8 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                             break;
                         }
                     }
-                }
-                else {//若是新父项,把当前子项加入父项后，把新父项加入集合中
-                    AuthVo parentVo=new AuthVo();
+                } else {//若是新父项,把当前子项加入父项后，把新父项加入集合中
+                    AuthVo parentVo = new AuthVo();
                     parentVo.setId(pid);
                     //TODO 同 line:133
                     parentVo.setName(settingService.getById(pid).getObject());
@@ -170,10 +166,9 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                     parentVo.setUrl("nihao");
                     parentVos.add(parentVo);
                     //TODO　排版
-                        }
-                    }
                 }
-
+            }
+        }
 
         //将得到的父项集合作为下一次迭代的子项集
         return upShow(parentVos);

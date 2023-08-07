@@ -94,3 +94,36 @@ System.out.println(product); // 输出：20
          }
 
 ```
+
+### 事务
+
+- 事务@Transactional由spring控制时，它会在抛出异常的时候进行回滚。如果自己使用**try-catch**捕获处理了，是不生效的。如果想事务生效可以进行手动回滚或者在catch里面将异常抛出throw new RuntimeException();有两种方法
+
+
+**方案一：**手动抛出运行时异常(**缺陷是不能在catch代码块自定义返回值**)
+
+```java
+try{
+      ....  
+  }catch(Exception e){
+      logger.error("fail",e);
+      throw new RuntimeException;
+}
+```
+
+**方案二：**手动进行回滚 **TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();**
+
+```java
+
+
+try{
+      ...
+  }catch(Exception e){
+      log.error("fail",e);
+    //手动进行回滚
+      TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+      return false;
+}
+```
+
+

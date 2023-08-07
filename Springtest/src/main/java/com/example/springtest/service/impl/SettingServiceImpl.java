@@ -1,8 +1,6 @@
 package com.example.springtest.service.impl;
 
-import com.example.springtest.entity.Menu;
 import com.example.springtest.entity.Setting;
-import com.example.springtest.mapper.MenuMapper;
 import com.example.springtest.mapper.SettingMapper;
 import com.example.springtest.service.SettingService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

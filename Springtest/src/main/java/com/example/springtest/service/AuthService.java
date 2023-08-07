@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ *  权限服务类
  * </p>
  *
  * @author Lin

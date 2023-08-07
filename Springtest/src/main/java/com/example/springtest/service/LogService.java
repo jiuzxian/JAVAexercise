@@ -7,7 +7,7 @@ import com.example.springtest.vo.InAuthVo;
 
 /**
  * <p>
- *  服务类
+ *  日志服务类
  * </p>
  *
  * @author Lin
@@ -15,6 +15,7 @@ import com.example.springtest.vo.InAuthVo;
  */
 public interface LogService extends IService<Log> {
 
-
+    Result logSuccess(String type,int userId, Object vo);
+    Result logFail(String type,int userId, Object vo);
 
 }

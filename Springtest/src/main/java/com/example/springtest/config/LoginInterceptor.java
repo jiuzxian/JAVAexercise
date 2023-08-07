@@ -1,5 +1,7 @@
 package com.example.springtest.config;
 
+import com.example.springtest.util.JWTUtil;
+import com.example.springtest.util.TokenUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,6 +16,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Resource
     RedisTemplate redisTemplate;
+
+    @Resource
+    private TokenUtil tokenUtil;
 
 //    Springutil.geiBean
 // 2.
@@ -37,7 +42,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (!redisTemplate.hasKey(token)){
             httpServletResponse.sendRedirect("/login");
             return false;
-
+        }else {
+            httpServletRequest.setAttribute("userId",tokenUtil.getId(token));
+            tokenUtil.freshToken(token);
         }
 
         return true;

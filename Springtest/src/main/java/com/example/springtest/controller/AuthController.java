@@ -46,9 +46,6 @@ public class AuthController {
     @Resource
     private TokenUtil tokenUtil;
 
-
-    // 方法注释
-
     /**
      * 查询员工的权限
      *
@@ -56,17 +53,16 @@ public class AuthController {
      * @return
      */
     @PostMapping("/authSearch")
-    // 入参不用基础类型,用包装类型
-    // 前端要怎么使用这个数据结构
-    public Result<List<AuthVo>> search(@RequestParam("userId") Integer id, HttpServletRequest httpServletRequest) {
+    public Result<List<AuthVo>> search(@RequestParam("employeeId") Integer id, HttpServletRequest httpServletRequest) {
 
         //刷新token
-        //TODO 刷新token放在拦截器，验证完之后刷新
-        String token = httpServletRequest.getHeader("token");
-        tokenUtil.freshToken(token);
+//        // TODO 刷新token放在拦截器，验证完之后刷新
+//        String token = httpServletRequest.getHeader("token");
+//        //System.out.println("user"+httpServletRequest.getAttribute("userId"));
+//        tokenUtil.freshToken(token);
 
         //根据id查权限
-        //TODO 业务处理不放在controller层
+        // TODO 业务处理不放在controller层
         List<Auth> authList = authService.findByUId(id);
 
         // 若是判断是否有员工，应该放在方法第一行
@@ -76,7 +72,7 @@ public class AuthController {
         else {
 
             List<AuthVo> authVoList = new ArrayList<>();
-            //TODO 为什么选择用map
+            // TODO 为什么选择用map
             Map<Integer, Map> snmap = settingService.getIdNameMap();
             for (int i = 0; i < authList.size(); i++) {
                 AuthVo vo = new AuthVo();
@@ -144,10 +140,11 @@ public class AuthController {
     public Result add(@RequestBody InAuthVo vo, HttpServletRequest httpServletRequest) {
 
         //判断操作人
-        String token = httpServletRequest.getHeader("token");
-        tokenUtil.freshToken(token);
-        //TODO 尝试使用过滤器的方式将登录的用户信息传递到接口，而不是每次使用的时候再次解析token
-        int userId = tokenUtil.getId(token);
+//        String token = httpServletRequest.getHeader("token");
+//        tokenUtil.freshToken(token);
+//        // TODO 尝试使用过滤器的方式将登录的用户信息传递到接口，而不是每次使用的时候再次解析token
+//        int userId = tokenUtil.getId(token);
+        int userId=Integer.valueOf(String.valueOf(httpServletRequest.getAttribute("userId")));
         return authService.authGive(vo,userId);
 
 

@@ -22,7 +22,7 @@ public class Testmysql {
     DepartmentsService departmentsService;
 
     @Resource
-    MenuService menuService;
+    SettingService settingService;
 
     @Autowired
     UserService userService;
@@ -71,7 +71,7 @@ public class Testmysql {
         int a=1;
 
 
-        Map<Integer,Map> mnmap = menuService.getIdNameMap();
+        Map<Integer,Map> mnmap = settingService.getIdNameMap();
         String settingName="";
         try {
             settingName=(String) mnmap.get(a).get("object");

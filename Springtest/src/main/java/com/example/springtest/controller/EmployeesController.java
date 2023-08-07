@@ -36,9 +36,6 @@ public class EmployeesController {
     @PostMapping("/search")
     public Result<List<Employees>> search(@RequestParam("parameter") String parameter, HttpServletRequest httpServletRequest) {
 
-        //刷新token
-        String token = httpServletRequest.getHeader("token");
-        tokenUtil.freshToken(token);
 
         // 在项目中controler层不应该直接操作数据库，应该通过service层进行操作
         List<Employees> employeesList = employeesService.findBy(parameter);
@@ -65,14 +62,12 @@ public class EmployeesController {
     @PostMapping("/update")
     public Result update(@RequestBody Employees e, HttpServletRequest httpServletRequest) {
 
-        //刷新token
-        String token = httpServletRequest.getHeader("token");
-        tokenUtil.freshToken(token);
+
         if (ObjectUtils.isEmpty(e)) {
             return Result.fail(102, "请输入员工信息！");
         } else {
             //判断操作人
-            int userId=tokenUtil.getId(token);
+            int userId=Integer.valueOf(String.valueOf(httpServletRequest.getAttribute("userId")));
             //更新人
             e.setUpdatedBy(userId);
             employeesService.update(e);
@@ -89,14 +84,12 @@ public class EmployeesController {
      */
     @PostMapping("/add")
     public Result add(@RequestBody Employees e, HttpServletRequest httpServletRequest) {
-        //刷新token
-        String token = httpServletRequest.getHeader("token");
-        tokenUtil.freshToken(token);
+
         if (ObjectUtils.isEmpty(e)) {
             return Result.fail(102, "请输入员工信息！");
         } else {
             //判断操作人
-            int userId=tokenUtil.getId(token);
+            int userId=Integer.valueOf(String.valueOf(httpServletRequest.getAttribute("userId")));
             //创建人
             e.setCreatedBy(userId);
             employeesService.add(e);
@@ -114,11 +107,6 @@ public class EmployeesController {
 
     @PostMapping("/delete")
     public Result delete(@RequestParam("id") int id, HttpServletRequest httpServletRequest) {
-        //刷新token
-        String token = httpServletRequest.getHeader("token");
-        tokenUtil.freshToken(token);
-
-        // 物理删除和逻辑删除
         employeesService.deleteByID(id);
         return Result.success();
     }
@@ -131,10 +119,6 @@ public class EmployeesController {
      */
     @PostMapping("/isDelete")
     public Result isDelete(@RequestParam("id") int id, HttpServletRequest httpServletRequest) {
-        //刷新token
-        String token = httpServletRequest.getHeader("token");
-        tokenUtil.freshToken(token);
-
         employeesService.isDelete(id);
         return Result.success();
     }

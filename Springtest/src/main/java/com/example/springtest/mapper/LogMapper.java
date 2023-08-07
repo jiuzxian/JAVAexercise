@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- *  Mapper 接口
+ *  日志Mapper 接口
  * </p>
  *
  * @author Lin
