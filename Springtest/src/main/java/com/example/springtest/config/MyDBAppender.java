@@ -74,6 +74,7 @@ public class MyDBAppender extends DBAppenderBase<ILoggingEvent> {
     private void bindLoggingEventWithInsertStatement(PreparedStatement stmt, ILoggingEvent event) throws SQLException {
         // 从 MDC 中获取 userId
         String userId = event.getMDCPropertyMap().get("userId");
+        //TODO 每个SET表示什么？
         stmt.setString(USER_INDEX, userId);
 
         stmt.setTimestamp(TIME_INDEX, new Timestamp(event.getTimeStamp()));
@@ -95,6 +96,7 @@ public class MyDBAppender extends DBAppenderBase<ILoggingEvent> {
     protected void subAppend(ILoggingEvent event, Connection connection, PreparedStatement insertStatement) throws Throwable {
 
         // 只记录特定的日志消息
+        //TODO need值什么时候传递
         String need = event.getMDCPropertyMap().get("need");
         if ("1".equals(need)) {
             bindLoggingEventWithInsertStatement(insertStatement, event);

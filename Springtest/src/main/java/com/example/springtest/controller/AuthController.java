@@ -27,9 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
+
 @RestController
 public class AuthController {
-    //TODO 全局对象无特殊要求外，都用private关键字修饰
+    // 全局对象无特殊要求外，都用private关键字修饰
     @Resource
     private EmployeesService employeesService;
 
@@ -46,7 +47,7 @@ public class AuthController {
     private TokenUtil tokenUtil;
 
 
-    //TODO 方法注释
+    // 方法注释
 
     /**
      * 查询员工的权限
@@ -55,11 +56,12 @@ public class AuthController {
      * @return
      */
     @PostMapping("/authSearch")
-    //TODO 入参不用基础类型,用包装类型
-    //TODO 前端要怎么使用这个数据结构
+    // 入参不用基础类型,用包装类型
+    // 前端要怎么使用这个数据结构
     public Result<List<AuthVo>> search(@RequestParam("userId") Integer id, HttpServletRequest httpServletRequest) {
 
         //刷新token
+        //TODO 刷新token放在拦截器，验证完之后刷新
         String token = httpServletRequest.getHeader("token");
         tokenUtil.freshToken(token);
 
@@ -67,13 +69,14 @@ public class AuthController {
         //TODO 业务处理不放在controller层
         List<Auth> authList = authService.findByUId(id);
 
-        //TODO 若是判断是否有员工，应该放在方法第一行
+        // 若是判断是否有员工，应该放在方法第一行
         if (CollectionUtils.isEmpty(authList)) {
             return Result.fail(101, "未找到该员工！");
-        }//TODO 排版
+        }// 排版
         else {
 
             List<AuthVo> authVoList = new ArrayList<>();
+            //TODO 为什么选择用map
             Map<Integer, Map> snmap = settingService.getIdNameMap();
             for (int i = 0; i < authList.size(); i++) {
                 AuthVo vo = new AuthVo();
@@ -94,7 +97,7 @@ public class AuthController {
 //            Map<Integer, Map> smmap = settingService.getParentIdMap();
 //            Map<Integer, Map> mnmap = menuService.getIdNameMap();
 //
-//            //TODO 代码很长的时候不用foreach了，出bug了比较难定位
+//            // 代码很长的时候不用foreach了，出bug了比较难定位
 //            for (int i = 0; i < authList.size(); i++) {
 //                AuthVo vo = new AuthVo();
 //                Auth auth = authList.get(i);
@@ -104,7 +107,7 @@ public class AuthController {
 //                //二级菜单名
 //                String settingName = "";
 //                try {
-//                    //TODO 基础类型不要用强转
+//                    // 基础类型不要用强转
 //                    settingName = String.valueOf(snmap.get(settingId).get("object"));
 //                } catch (Exception e) {
 //                    settingName = "";
@@ -143,6 +146,7 @@ public class AuthController {
         //判断操作人
         String token = httpServletRequest.getHeader("token");
         tokenUtil.freshToken(token);
+        //TODO 尝试使用过滤器的方式将登录的用户信息传递到接口，而不是每次使用的时候再次解析token
         int userId = tokenUtil.getId(token);
         return authService.authGive(vo,userId);
 

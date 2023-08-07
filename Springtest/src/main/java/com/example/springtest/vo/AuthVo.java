@@ -19,6 +19,8 @@ public class AuthVo {
     private Integer id;
     private String url;
     // 子菜单
+    //TODO 有需要的时候再实例化对象
+    //TODO 排版
     private List<AuthVo>child=new ArrayList<>();
 
 }

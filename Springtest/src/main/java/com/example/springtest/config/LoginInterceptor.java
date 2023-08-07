@@ -33,6 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         // 验证 token 是否过期（有存），不在库里就回到登录页
+        //TODO jwt + redis的方案没有写？
         if (!redisTemplate.hasKey(token)){
             httpServletResponse.sendRedirect("/login");
             return false;
