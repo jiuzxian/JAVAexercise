@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- *日志
+ *  mybatis日志
  * </p>
  *
  * @author Lin
@@ -43,6 +43,10 @@ public class Log implements Serializable {
      * 操作类型
      */
     private String type;
+    /**
+     * 操作方法
+     */
+    private String method;
     /**
      * 操作对象
      */

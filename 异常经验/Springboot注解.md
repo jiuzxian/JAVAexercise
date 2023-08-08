@@ -1,5 +1,4 @@
-# **Springboot注解**
-# TODO 12356这些是Springboot注解吗？
+# **Springboot及插件注解**
 1. **@NoArgsConstructor：**生成无参的构造方法。
 
 2. **@AllArgsConstructor：**生成该类下全部属性的构造方法。

@@ -28,7 +28,7 @@ public class GetController {
     EmployeesMapper employeesMapper;
 
     //登录页
-    @PostMapping({"/", "/login"})
+    @GetMapping({"/", "/login"})
     public String toLogin() {
         return "Login";
     }

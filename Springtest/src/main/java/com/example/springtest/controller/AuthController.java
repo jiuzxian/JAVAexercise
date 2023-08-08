@@ -1,6 +1,7 @@
 package com.example.springtest.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.springtest.annotation.AopLogger;
 import com.example.springtest.entity.*;
 import com.example.springtest.service.*;
 import com.example.springtest.util.JWTUtil;
@@ -50,8 +51,9 @@ public class AuthController {
      * @param id
      * @return
      */
+    @AopLogger("查询用户权限")
     @PostMapping("/authSearch")
-    public Result<List<AuthVo>> search(@RequestParam("employeeId") Integer id, HttpServletRequest httpServletRequest) {
+    public Result<List<AuthVo>> search(@RequestParam("employeeId") Integer id) {
 
         //刷新token
 //        // TODO 刷新token放在拦截器，验证完之后刷新
