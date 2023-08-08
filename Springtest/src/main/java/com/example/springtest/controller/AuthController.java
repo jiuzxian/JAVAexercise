@@ -40,8 +40,6 @@ public class AuthController {
     @Resource
     private SettingService settingService;
 
-    @Resource
-    private MenuService menuService;
 
     @Resource
     private TokenUtil tokenUtil;

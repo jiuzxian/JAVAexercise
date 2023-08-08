@@ -32,14 +32,14 @@ public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-    @PostMapping("/my-endpoint")
-    public String myEndpoint(@RequestParam("userId") String userId) {
-        MDC.put("userId", userId);
-        MDC.put("need", String.valueOf(1));
-        LOGGER.info("This is a log message");
-        MDC.clear();
-        return "success";
-    }
+//    @PostMapping("/my-endpoint")
+//    public String myEndpoint(@RequestParam("userId") String userId) {
+//        MDC.put("userId", userId);
+//        MDC.put("need", String.valueOf(1));
+//        LOGGER.info("This is a log message");
+//        MDC.clear();
+//        return "success";
+//    }
 
 
 

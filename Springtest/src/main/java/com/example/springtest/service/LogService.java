@@ -2,8 +2,6 @@ package com.example.springtest.service;
 
 import com.example.springtest.entity.Log;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.springtest.entity.Result;
-import com.example.springtest.vo.InAuthVo;
 
 /**
  * <p>
@@ -15,7 +13,7 @@ import com.example.springtest.vo.InAuthVo;
  */
 public interface LogService extends IService<Log> {
 
-    Result logSuccess(String type,int userId, Object vo);
-    Result logFail(String type,int userId, Object vo);
+    void logStatus(String type, int userId, Object vo, int success);
+
 
 }

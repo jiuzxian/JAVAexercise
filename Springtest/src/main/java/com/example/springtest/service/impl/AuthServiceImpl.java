@@ -108,12 +108,16 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                 }
             }
             //TODO 以下代码基本一致，考虑封装
-            return logService.logSuccess("authGive", userId, vo.toString());
+            logService.logStatus("authGive", userId, vo.toString(),1);
+            return Result.success();
+
         } catch (Exception e) {
             //手工回滚异常，回滚到savePoint
             //TODO 为什么写在这个位置
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
-            return logService.logFail("authGive", userId, vo.toString());
+            logService.logStatus("authGive", userId, vo.toString(),0);
+            return Result.fail();
+
         }
 
         // result类返回成功时，一般不重设code编码
