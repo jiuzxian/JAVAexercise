@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -68,9 +70,17 @@ public class AopLoggerAspect {
 
         //拿到请求传入的参数
         Object[] args = point.getArgs();
+        ParameterNameDiscoverer pnd = new DefaultParameterNameDiscoverer();
+        String[] parameterNames = pnd.getParameterNames(method);
+        String objects="";
+
+        for(int i=0;i<args.length;i++) {
+           String parameterName =parameterNames[i];
+           String object = String.valueOf(args[i]);
+           objects=objects+parameterName+": "+object+",";
+        }
         try{
-            String object = Arrays.toString(args);
-            log.setObject(object);
+            log.setObject(objects);
         }catch (Exception e){
         }
 

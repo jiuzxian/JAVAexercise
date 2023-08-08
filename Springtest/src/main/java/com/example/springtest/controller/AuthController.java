@@ -84,47 +84,6 @@ public class AuthController {
             }
 
             List<AuthVo> authAllVoList=authService.upShow(authVoList);
-
-
-
-
-//            List<AuthVo> authVoList = new ArrayList<>();
-//            Map<Integer, Map> snmap = settingService.getIdNameMap();
-//            Map<Integer, Map> smmap = settingService.getParentIdMap();
-//            Map<Integer, Map> mnmap = menuService.getIdNameMap();
-//
-//            // 代码很长的时候不用foreach了，出bug了比较难定位
-//            for (int i = 0; i < authList.size(); i++) {
-//                AuthVo vo = new AuthVo();
-//                Auth auth = authList.get(i);
-//                //BeanUtils.copyProperties(auth, vo);
-//                int settingId = auth.getSettingId();
-//
-//                //二级菜单名
-//                String settingName = "";
-//                try {
-//                    // 基础类型不要用强转
-//                    settingName = String.valueOf(snmap.get(settingId).get("object"));
-//                } catch (Exception e) {
-//                    settingName = "";
-//                }
-//                vo.setSettingName(settingName);
-//
-//                //一极菜单id
-//                int menuId;
-//                menuId = Integer.valueOf(String.valueOf(smmap.get(settingId).get("parent")));
-//                vo.setParentId(menuId);
-//
-//                //一级菜单名
-//                String menuName = "";
-//                try {
-//                    menuName = String.valueOf(mnmap.get(menuId).get("object"));
-//                } catch (Exception e) {
-//                    menuName = "";
-//                }
-//                vo.setParentName(menuName);
-//                authVoList.add(vo);
-
             return Result.success(authAllVoList);
         }
 
