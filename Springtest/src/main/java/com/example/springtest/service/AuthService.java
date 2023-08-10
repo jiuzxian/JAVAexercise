@@ -24,6 +24,10 @@ public interface AuthService extends IService<Auth> {
 
     Result authGive(InAuthVo vo, int userId);
 
+    //List<AuthVo> upShow(List<AuthVo> vo1s);
+
+    List<AuthVo> getMenuHierarchy(int userId);
+
     List<AuthVo> upShow(List<AuthVo> vo1s);
 
 }

@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.springtest.springtest.mapper.AuthMapper">
+<mapper namespace="com.example.springtest.mapper.AuthMapper">
+
+    <select id="getMenuHierarchy" resultType="com.example.springtest.vo.AuthVo">
+        WITH RECURSIVE menu_hierarchy AS (
+            SELECT id, object AS name, parent, url
+            FROM setting
+            WHERE id IN (SELECT setting_id FROM auth WHERE user_id = #{userId})
+            UNION ALL
+            SELECT s.id, s.object AS name, s.parent, s.url
+            FROM setting s
+                     INNER JOIN menu_hierarchy mh ON s.id = mh.parent
+        )
+        SELECT * FROM menu_hierarchy
+    </select>
 
 </mapper>

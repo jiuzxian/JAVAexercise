@@ -4,6 +4,7 @@ import com.example.springtest.entity.Setting;
 import com.example.springtest.mapper.SettingMapper;
 import com.example.springtest.service.SettingService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.springtest.vo.AuthVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,5 +33,8 @@ public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> impl
     public Map<Integer, Map> getParentIdMap(){
         return settingMapper.getParentIdMap();
     }
+
+    @Override
+    public AuthVo getPbyS(int settingId){return settingMapper.getPbyS(settingId); }
 
 }

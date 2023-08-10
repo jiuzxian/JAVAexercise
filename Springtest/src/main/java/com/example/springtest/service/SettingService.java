@@ -2,6 +2,7 @@ package com.example.springtest.service;
 
 import com.example.springtest.entity.Setting;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.springtest.vo.AuthVo;
 
 import java.util.Map;
 
@@ -19,4 +20,5 @@ public interface SettingService extends IService<Setting> {
     Map<Integer, Map> getParentIdMap();
 
 
+    AuthVo getPbyS(int settingId);
 }

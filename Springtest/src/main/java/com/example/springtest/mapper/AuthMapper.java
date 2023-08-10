@@ -2,7 +2,10 @@ package com.example.springtest.mapper;
 
 import com.example.springtest.entity.Auth;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.springtest.vo.AuthVo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,5 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AuthMapper extends BaseMapper<Auth> {
+
+    List<AuthVo> getMenuHierarchy(int userId);
 
 }
