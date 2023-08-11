@@ -2,6 +2,8 @@ package com.example.springtest.controller;
 
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.User;
+import com.example.springtest.exception.NotInException;
+import com.example.springtest.exception.NotMatchException;
 import com.example.springtest.util.JWTUtil;
 import com.example.springtest.service.UserService;
 
@@ -51,10 +53,10 @@ public class LoginController {
         User user = userService.findByAccount(account);
 
         if (ObjectUtils.isEmpty(user)) {
-            return Result.fail();
+            throw new NotInException("用户不存在！");
         }
         if (!password.equals(user.getPassword())) {
-            return Result.fail(101, "密码错误！");
+            throw new NotMatchException("密码错误！");
         }
 
         String jwtId=JWTUtil.createJwt(String.valueOf(user.getId()));

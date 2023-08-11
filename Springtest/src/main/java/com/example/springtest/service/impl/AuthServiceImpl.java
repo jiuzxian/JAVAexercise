@@ -104,9 +104,9 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                 auth.setUpdatedBy(userId);
                 authService.save(auth);
                 //TODO 括号
-                if (i == list.size() / 2) {
-                    throw new RuntimeException("Test exception");
-                }
+//                if (i == list.size() / 2) {
+//                    throw new RuntimeException("Test exception");
+//                }
             }
             //TODO 以下代码基本一致，考虑封装
             logService.logStatus("authGive", userId, vo.toString(), 1);

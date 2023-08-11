@@ -3,6 +3,7 @@ package com.example.springtest.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.springtest.annotation.AopLogger;
 import com.example.springtest.entity.*;
+import com.example.springtest.exception.NotInException;
 import com.example.springtest.service.*;
 import com.example.springtest.util.JWTUtil;
 import com.example.springtest.util.TokenUtil;
@@ -55,21 +56,15 @@ public class AuthController {
     @PostMapping("/authSearch")
     public Result<List<AuthVo>> search(@RequestParam("employeeId") Integer id) {
 
-        //刷新token
-//        // TODO 刷新token放在拦截器，验证完之后刷新
-//        String token = httpServletRequest.getHeader("token");
-//        //System.out.println("user"+httpServletRequest.getAttribute("userId"));
-//        tokenUtil.freshToken(token);
-
         //根据id查权限
         // TODO 业务处理不放在controller层
         List<Auth> authList = authService.findByUId(id);
 
         // 若是判断是否有员工，应该放在方法第一行
         if (CollectionUtils.isEmpty(authList)) {
-            return Result.fail(101, "未找到该员工！");
+            throw new NotInException("未找到该员工！");
         }// 排版
-        else {
+        //else {
 
             List<AuthVo> authVoList = new ArrayList<>();
             // TODO 为什么选择用map
@@ -85,7 +80,7 @@ public class AuthController {
 
             List<AuthVo> authAllVoList=authService.upShow(authVoList);
             return Result.success(authAllVoList);
-        }
+       // }
 
     }
 
@@ -98,9 +93,6 @@ public class AuthController {
     @PostMapping("/authGive")
     public Result add(@RequestBody InAuthVo vo, HttpServletRequest httpServletRequest) {
 
-        //判断操作人
-//        String token = httpServletRequest.getHeader("token");
-//        tokenUtil.freshToken(token);
 //        // TODO 尝试使用过滤器的方式将登录的用户信息传递到接口，而不是每次使用的时候再次解析token
 //        int userId = tokenUtil.getId(token);
         int userId=Integer.valueOf(String.valueOf(httpServletRequest.getAttribute("userId")));

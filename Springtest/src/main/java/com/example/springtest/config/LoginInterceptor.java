@@ -31,21 +31,21 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
 
-//        String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
-//
-//        if (token == null) {
-//            throw new RuntimeException("无token，请重新登录");
-//        }
-//
-//        // 验证 token 是否过期（有存），不在库里就回到登录页
-//        //TODO jwt + redis的方案没有写？
-//        if (!redisTemplate.hasKey(token)){
-//            httpServletResponse.sendRedirect("/login");//.sendRedirect(httpServletRequest.getContextPath()+"/login");//
-//            return false;
-//        }else {
-//            httpServletRequest.setAttribute("userId",tokenUtil.getId(token));
-//            tokenUtil.freshToken(token);
-//        }
+        String token = httpServletRequest.getHeader("token");// 从 http 请求头中取出 token
+
+        if (token == null) {
+            throw new RuntimeException("无token，请重新登录");
+        }
+
+        // 验证 token 是否过期（有存），不在库里就回到登录页
+        //TODO jwt + redis的方案没有写？
+        if (!redisTemplate.hasKey(token)){
+            httpServletResponse.sendRedirect("/login");//.sendRedirect(httpServletRequest.getContextPath()+"/login");//
+            return false;
+        }else {
+            httpServletRequest.setAttribute("userId",tokenUtil.getId(token));
+            tokenUtil.freshToken(token);
+        }
 
         return true;
     }

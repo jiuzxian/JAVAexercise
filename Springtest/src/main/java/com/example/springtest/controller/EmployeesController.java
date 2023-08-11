@@ -3,6 +3,8 @@ package com.example.springtest.controller;
 
 import com.example.springtest.entity.Employees;
 import com.example.springtest.entity.Result;
+import com.example.springtest.exception.InNullException;
+import com.example.springtest.exception.NotInException;
 import com.example.springtest.service.EmployeesService;
 import com.example.springtest.util.TokenUtil;
 import org.springframework.util.CollectionUtils;
@@ -44,7 +46,8 @@ public class EmployeesController {
         // 对集合的判空，可以考虑使用库中封装好的工具类
         // 单元测试中每个if、else都要覆盖都
         if (CollectionUtils.isEmpty(employeesList)) {
-            return Result.fail(101, "未找到该员工！");
+            //return Result.fail(101, "未找到该员工！");
+            throw new NotInException("未找到该员工！");
         }
         // if/else后面的{}不要省略
         else {
@@ -66,7 +69,7 @@ public class EmployeesController {
 
 
         if (ObjectUtils.isEmpty(e)) {
-            return Result.fail(102, "请输入员工信息！");
+            throw  new InNullException("请输入员工信息！");
         } else {
             //判断操作人
             int userId=Integer.valueOf(String.valueOf(httpServletRequest.getAttribute("userId")));
@@ -88,7 +91,7 @@ public class EmployeesController {
     public Result add(@RequestBody Employees e, HttpServletRequest httpServletRequest) {
 
         if (ObjectUtils.isEmpty(e)) {
-            return Result.fail(102, "请输入员工信息！");
+            throw  new InNullException("请输入员工信息！");
         } else {
             //判断操作人
             int userId=Integer.valueOf(String.valueOf(httpServletRequest.getAttribute("userId")));
