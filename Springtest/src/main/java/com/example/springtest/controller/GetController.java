@@ -33,6 +33,11 @@ public class GetController {
         return "Login";
     }
 
+    @GetMapping({"/files", "/files.login"})
+    public String toFiles() {
+        return "files";
+    }
+
     //主页
     @GetMapping({"/test", "/test.html"})
     public String all(Model model) {
