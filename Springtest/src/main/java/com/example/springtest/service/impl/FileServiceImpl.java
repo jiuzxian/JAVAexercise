@@ -66,6 +66,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileLog> implements
         String newName = UUID.randomUUID() + oldName.substring(oldName.lastIndexOf("."),oldName.length());
         try {
             //将上传的文件保存到服务器指定文件夹中
+            //TODO 如果文件内容相同,怎么处理
             uploadFile.transferTo(new File(folder, newName));
             //构建文件的访问路径
             filePath = request.getScheme() + "://" + request.getServerName() + ":" +
@@ -75,7 +76,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileLog> implements
             fileLog.setPath(realPath+format+"\\"+newName);
             fileLog.setFilename(oldName);
             fileService.save(fileLog);
-
+            //TODO
             System.out.println(realPath+format+"\\"+newName);
             System.out.println(filePath);
             // 返回文件的访问路径
@@ -91,10 +92,11 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileLog> implements
     /**
      * 下载文件
      * @param response
-     * @param fileId
+     * @param //TODO fileId
      * @return
      */
     @Override
+
     public Result download(HttpServletResponse response, int fileId){
         try {
             FileLog file = fileService.getById(fileId);
@@ -112,6 +114,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FileLog> implements
             //获取响应的输出流，让文件内容写入响应
             ServletOutputStream os = response.getOutputStream();
             //使用Apache Commons IO的IOUtils.copy方法将文件内容从输入流复制到输出流
+            //TODO 只用java类库实现
             IOUtils.copy(in, os);
             //安静地关闭输入输出流，即使在发生异常的情况下也不会抛出异常
             IOUtils.closeQuietly(in);

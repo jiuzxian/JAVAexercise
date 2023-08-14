@@ -40,6 +40,7 @@ public class AopLoggerAspect {
         Object result = point.proceed();
         Timestamp time=new Timestamp(System.currentTimeMillis());
         // 保存日志
+        //TODO point,time参数的目的?
         logSave(point,time,result);
 
         return result; // 返回目标方法的执行结果
@@ -80,8 +81,10 @@ public class AopLoggerAspect {
            objects=objects+parameterName+": "+object+",";
         }
         try{
+            //TODO 会出现什么异常?
             log.setObject(objects);
         }catch (Exception e){
+            //TODO
         }
 
         //获取request,拿到操作人

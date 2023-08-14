@@ -62,13 +62,16 @@ public class GlobalExceptionHandler {
             AsyncRequestTimeoutException.class
     })
     public Result handleServletException(Exception e) {
+
         int status = 500; //默认
         String message = "服务器内部错误"; //默认
         try {
+            //TODO 要对InNullException做特殊处理,怎么写
             ServletResponseEnum servletExceptionEnum = ServletResponseEnum.valueOf(e.getClass().getSimpleName());
             status = servletExceptionEnum.getCode();
             message = servletExceptionEnum.getMessage();
         } catch (IllegalArgumentException e1) {
+            //TODO 用日志组件进行记录 slf4j + logback
             System.out.println("class [" + e.getClass().getName() + "] not defined in enum " + ServletResponseEnum.class.getName());
         }
         return Result.fail(status, message);

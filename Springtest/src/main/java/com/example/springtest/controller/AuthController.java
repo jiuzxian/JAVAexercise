@@ -93,7 +93,7 @@ public class AuthController {
     @PostMapping("/authGive")
     public Result add(@RequestBody InAuthVo vo, HttpServletRequest httpServletRequest) {
 
-//        // TODO 尝试使用过滤器的方式将登录的用户信息传递到接口，而不是每次使用的时候再次解析token
+//        //  尝试使用过滤器的方式将登录的用户信息传递到接口，而不是每次使用的时候再次解析token
 //        int userId = tokenUtil.getId(token);
         int userId=Integer.valueOf(String.valueOf(httpServletRequest.getAttribute("userId")));
         return authService.authGive(vo,userId);

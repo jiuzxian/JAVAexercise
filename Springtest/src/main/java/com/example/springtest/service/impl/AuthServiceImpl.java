@@ -46,7 +46,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
     @Resource
     AuthMapper authMapper;
 
-    //TODO 实现的的方法要加Override注解
+    // 实现的的方法要加Override注解
     @Override
     public List<Auth> findByUId(int id) {
 
@@ -64,7 +64,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
     }
 
 
-    //TODO 事务的隔离性、传播性
+    // 事务的隔离性、传播性
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public Result authGive(InAuthVo vo, int userId) {
@@ -77,7 +77,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
 //
 //        }
 
-        //TODO 对象创建在需要的地方
+        // 对象创建在需要的地方
         Log log = new Log();
         Result result = new Result();
         //只回滚以下异常，设置回滚点
@@ -88,7 +88,6 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                 authService.removeByUId(id);
             } catch (Exception e) {
                 System.out.println("没有权限重叠！");
-                //TODO 捕获异常后是不是得做点什么？
             }
             //一个个存
             // 排版 ctrl + alt + l
@@ -103,18 +102,17 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
                 auth.setCreatedBy(userId);
                 auth.setUpdatedBy(userId);
                 authService.save(auth);
-                //TODO 括号
+                // 括号
 //                if (i == list.size() / 2) {
 //                    throw new RuntimeException("Test exception");
 //                }
             }
-            //TODO 以下代码基本一致，考虑封装
+            // 以下代码基本一致，考虑封装
             logService.logStatus("authGive", userId, vo.toString(), 1);
             return Result.success();
 
         } catch (Exception e) {
             //手工回滚异常，回滚到savePoint
-            //TODO 为什么写在这个位置
             TransactionAspectSupport.currentTransactionStatus().rollbackToSavepoint(savePoint);
             logService.logStatus("authGive", userId, vo.toString(), 0);
             return Result.fail();
@@ -142,8 +140,10 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
         //TODO 出现超过三层的分支就要考虑一下你的代码是不是存在优化的可能性
         for (int i = 0; i < vo1s.size(); i++) {
             int sid = vo1s.get(i).getId();
+            //TODO 在递归的方法中尽量减少数据库操作
             int pid = settingService.getById(sid).getParent();
             //如果父id为-1，就返回上一次的结果
+            //TODO 调整方向:改条件判断;在添加数据时做好判断;调整处理逻辑
             if (pid == -1) {
                 return vo1s;
             } else {
@@ -170,6 +170,7 @@ public class AuthServiceImpl extends ServiceImpl<AuthMapper, Auth> implements Au
     }
 
 //
+    //TODO 方法注释
     @Override
     public List<AuthVo> getMenuHierarchy(int userId) {
         return authMapper.getMenuHierarchy(userId);

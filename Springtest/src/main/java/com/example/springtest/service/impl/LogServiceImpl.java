@@ -29,6 +29,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log> implements LogSe
         log.setType(type);
         log.setUserId(userId);
         log.setOperateAt( new Timestamp(System.currentTimeMillis()));
+        //TODO 
         log.setObject(vo.toString());
         log.setSuccessful(success);
         logService.save(log);
